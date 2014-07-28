@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="mousika_server"
+  id="myeclipse.1406555245696"
+  context-root="/mousika_server"
+  j2ee-spec="5.0"
+  archive="mousika_server.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+
