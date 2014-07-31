@@ -65,6 +65,19 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         String hql = "delete from "+clazz.getSimpleName()+" t where t."+this.getPkName()+" = :id ";
         session.createQuery(hql).setParameter("id", id).executeUpdate();
     }
+    
+    @Override
+    public void deleteWithCache(String id) {
+        Session session = sessionFactory.getCurrentSession();
+        session.delete(this.get(id));
+    }
+
+    @Override
+    public void deleteWithCache(List<String> ids) {
+        for (String id : ids){
+            this.delete(id);
+        }
+    }
 
     @Override
     public void update(T domain) {
@@ -194,9 +207,10 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {  
             field.isAnnotationPresent(Id.class);  
-            pkName=field.getName();  
+            pkName=field.getName();
             break;  
         }
         return pkName;
     }
+
 }

@@ -19,15 +19,26 @@ public interface BaseDao<T> {
      */
     public void add(List<T> domains);
     /**
-     * 删除
+     * 删除（如果被删除的域对象有加载到二级缓存中，推荐使用deleteWithCache，删除后将根据ID局部更新二级缓存中的域对象，性能较优；如果使用delete方法，将全部更新与域对象相同类型或者相关的缓存对象）
+     * @param id 主键
+     */
+    public void delete(String id);
+    /**
+     * 删除（如果被删除的域对象有加载到二级缓存中，推荐使用deleteWithCache，删除后将根据ID局部更新二级缓存中的域对象，性能较优；如果使用delete方法，将全部更新与域对象相同类型或者相关的缓存对象）
      * @param ids 主键集合
      */
     public void delete(List<String> ids);
     /**
-     * 删除
+     * 删除（如果被删除的域对象有加载到二级缓存中，推荐使用deleteWithCache，删除后将根据ID局部更新二级缓存中的域对象，性能较优；如果使用delete方法，将全部更新与域对象相同类型或者相关的缓存对象）
      * @param id 主键
      */
-    public void delete(String id);
+    public void deleteWithCache(String id);
+    /**
+     * 删除（如果被删除的域对象有加载到二级缓存中，推荐使用deleteWithCache，删除后将根据ID局部更新二级缓存中的域对象，性能较优；如果使用delete方法，将全部更新与域对象相同类型或者相关的缓存对象）
+     * @param ids 主键集合
+     */
+    public void deleteWithCache(List<String> ids);
+    
     /**
      * 更新
      * @param domain 对象
