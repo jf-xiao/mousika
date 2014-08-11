@@ -14,7 +14,11 @@ import org.springframework.security.access.intercept.AbstractSecurityInterceptor
 import org.springframework.security.access.intercept.InterceptorStatusToken;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
-
+/**
+ * 自定义安全过滤器
+ * @author xiaojf
+ *
+ */
 public class MousikaSecurityFilter extends AbstractSecurityInterceptor implements Filter {
 	
 	private FilterInvocationSecurityMetadataSource securityMetadataSource;

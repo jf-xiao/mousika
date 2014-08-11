@@ -1,8 +1,13 @@
 package com.mousika.security.model;
 
+/**
+ * 用户-角色关联
+ * @author xiaojf
+ *
+ */
 public class UsUserRole {
-	private String userId;
-	private String roleId;
+	private String userId;                 //用户主键
+	private String roleId;                 //角色主键
 
 	public String getUserId() {
 		return userId;

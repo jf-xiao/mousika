@@ -1,10 +1,14 @@
 package com.mousika.security.model;
-
+/**
+ * 资源/权限
+ * @author xiaojf
+ *
+ */
 public class UsAuthority {
-	private String authId;
-	private String name;
-	private boolean enable;
-	private String url;
+	private String authId;             //权限ID
+	private String name;               //权限名称
+	private boolean enable;            //是否可用
+	private String url;                //权限地址
 	
 	public UsAuthority() {
 	}
@@ -16,8 +20,6 @@ public class UsAuthority {
 		this.enable = enable;
 		this.url = url;
 	}
-
-
 
 	public String getAuthId() {
 		return authId;

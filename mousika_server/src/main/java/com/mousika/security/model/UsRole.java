@@ -1,9 +1,14 @@
 package com.mousika.security.model;
 
+/**
+ * 用户角色
+ * @author xiaojf
+ *
+ */
 public class UsRole {
-	private String roleId;
-	private String name;
-	private boolean enable;
+	private String roleId;             //角色ID
+	private String name;               //角色名称
+	private boolean enable;            //是否可用
 	
 	public UsRole() {
 	}
@@ -14,8 +19,6 @@ public class UsRole {
 		this.name = name;
 		this.enable = enable;
 	}
-
-
 
 	public String getRoleId() {
 		return roleId;

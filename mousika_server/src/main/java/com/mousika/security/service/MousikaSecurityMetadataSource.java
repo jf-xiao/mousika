@@ -17,115 +17,125 @@ import com.mousika.security.model.UsRole;
 import com.mousika.security.util.SecurityJdbcUtil;
 
 public class MousikaSecurityMetadataSource implements
-		FilterInvocationSecurityMetadataSource {
+        FilterInvocationSecurityMetadataSource {
 
-	private static Map<String, Collection<ConfigAttribute>> resourceMap = null;// 资源和权限的关系
+    private static Map<String, Collection<ConfigAttribute>> resourceMap = null;// 资源和权限的关系
 
-	public MousikaSecurityMetadataSource() {// 项目初始化过程中，加载资源 和权限
-		this.loadResourceDefine();
-	}
+    public MousikaSecurityMetadataSource() {// 项目初始化过程中，加载资源 和权限
+        this.loadResourceDefine();
+    }
 
-	private void loadResourceDefine() {
-		if (resourceMap == null) {
-			resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
-			List<UsAuthority> authorities = this.loadSysAuth();
-			for (UsAuthority authority : authorities) {
-				String authId = authority.getAuthId();
-				List<UsRole> roles = this.loadRoldWithAuthId(authId);
-				List<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
-				for (UsRole role : roles) {
-					ConfigAttribute configAttribute = new SecurityConfig(role.getName());
-					configAttributes.add(configAttribute);
-				}
+    /*
+     * 加载系统权限资源
+     */
+    private void loadResourceDefine() {
+        if (resourceMap == null) {
+            resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
+            List<UsAuthority> authorities = this.loadSysAuth();
+            for (UsAuthority authority : authorities) {
+                String authId = authority.getAuthId();
+                List<UsRole> roles = this.loadRoldWithAuthId(authId);
+                List<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
+                for (UsRole role : roles) {
+                    ConfigAttribute configAttribute = new SecurityConfig(role.getName());
+                    configAttributes.add(configAttribute);
+                }
+                resourceMap.put(authority.getUrl(), configAttributes);
+            }
+        }
+    }
 
-				resourceMap.put(authority.getUrl(), configAttributes);
+    /**
+     * 获取当前访问资源所需要的权限
+     */
+    @Override
+    public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
+        //获取当前访问的地址
+        String requestUrl = ((FilterInvocation) object).getRequestUrl();
+        System.out.println("requestUrl is " + requestUrl);
+        //加载系统权限资源
+        if (resourceMap == null) {
+            loadResourceDefine();
+        }
+        //返回获取当前访问资源所需要的权限
+        return resourceMap.get(requestUrl);
+    }
 
-			}
-		}
-	}
+    @Override
+    public Collection<ConfigAttribute> getAllConfigAttributes() {
+        return null;
+    }
 
-	/**
-	 * 获取当前访问资源所需要的权限
-	 */
-	@Override
-	public Collection<ConfigAttribute> getAttributes(Object object)throws IllegalArgumentException {
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return true;
+    }
 
-		String requestUrl = ((FilterInvocation)object).getRequestUrl();
-		System.out.println("requestUrl is " + requestUrl);
-		if (resourceMap == null) {
-			loadResourceDefine();
-		}
-		return resourceMap.get(requestUrl);
-	}
+    /**
+     * 获取系统资源和权限
+     * 
+     * @return
+     * @author jianfeng.xiao@foxmail.com 2014-4-27 下午1:31:56
+     */
+    private List<UsAuthority> loadSysAuth() {
+        ResultSet rs = null;
+        List<UsAuthority> authorities = new ArrayList<UsAuthority>();
 
-	@Override
-	public Collection<ConfigAttribute> getAllConfigAttributes() {
-		return null;
-	}
+        SecurityJdbcUtil sql = new SecurityJdbcUtil();
+        //获取所有可用的权限规则
+        rs = sql.executeQuery("SELECT * FROM US_AUTHORITY WHERE enable = '1' ");
+        try {
+            while (rs.next()) {
+                //权限ID
+                String authId = rs.getString("AUTH_ID");
+                //权限名称
+                String name = rs.getString("NAME");
+                //是否可用
+                boolean enable = rs.getBoolean("ENABLE");
+                //权限url
+                String url = rs.getString("URL");
+                UsAuthority authority = new UsAuthority(authId, name, enable,url);
+                authorities.add(authority);
+            }
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	@Override
-	public boolean supports(Class<?> clazz) {
-		return true;
-	}
+        return authorities;
+    }
 
-	/**
-	 * 获取系统资源和权限
-	 * 
-	 * @return
-	 * @author jianfeng.xiao@foxmail.com 2014-4-27 下午1:31:56
-	 */
-	private List<UsAuthority> loadSysAuth() {
-		ResultSet rs = null;
-		List<UsAuthority> authorities = new ArrayList<UsAuthority>();
+    /**
+     * 加载访问某一路径所需要的权限
+     * 
+     * @param authId
+     * @return
+     * @author jianfeng.xiao@foxmail.com 2014-4-27 下午1:44:08
+     */
+    private List<UsRole> loadRoldWithAuthId(String authId) {
+        List<UsRole> roles = new ArrayList<UsRole>();
+        ResultSet rs = null;
+        SecurityJdbcUtil sql = new SecurityJdbcUtil();
+        //获取当前访问用户具有的可用角色
+        rs = sql.executeQuery("SELECT r.role_id,r.name,r.enable FROM us_role r,us_authority a,us_role_auth l WHERE r.role_id = l.role_id AND a.auth_id = l.auth_id AND a.auth_id = '"
+                + authId + "'");
+        try {
+            while (rs.next()) {
+                //角色ID
+                String roleId = rs.getString("role_id");
+                //角色名称
+                String name = rs.getString("name");
+                //是否可用
+                boolean enable = rs.getBoolean("enable");
+                UsRole role = new UsRole(roleId, name, enable);
+                roles.add(role);
+            }
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		SecurityJdbcUtil sql = new SecurityJdbcUtil();
-		rs = sql.executeQuery("SELECT * FROM US_AUTHORITY WHERE enable = '1' ");
-		try {
-			while (rs.next()) {
-
-				String authId = rs.getString("AUTH_ID");
-				String name = rs.getString("NAME");
-				boolean enable = rs.getBoolean("ENABLE");
-				String url = rs.getString("URL");
-
-				UsAuthority authority = new UsAuthority(authId, name, enable,
-						url);
-				authorities.add(authority);
-			}
-			rs.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return authorities;
-	}
-
-	/**
-	 * 加载访问某一路径所需要的权限
-	 * 
-	 * @param authId
-	 * @return
-	 * @author jianfeng.xiao@foxmail.com 2014-4-27 下午1:44:08
-	 */
-	private List<UsRole> loadRoldWithAuthId(String authId) {
-		List<UsRole> roles = new ArrayList<UsRole>();
-		ResultSet rs = null;
-		SecurityJdbcUtil sql = new SecurityJdbcUtil();
-		rs = sql.executeQuery("SELECT r.role_id,r.name,r.enable FROM us_role r,us_authority a,us_role_auth l WHERE r.role_id = l.role_id AND a.auth_id = l.auth_id AND a.auth_id = '"+authId+"'");
-		try {
-			while (rs.next()) {
-				String roleId = rs.getString("role_id");
-				String name = rs.getString("name");
-				boolean enable = rs.getBoolean("enable");
-				UsRole role = new UsRole(roleId, name, enable);
-				roles.add(role);
-			}
-			rs.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return roles;
-	}
+        return roles;
+    }
 
 }

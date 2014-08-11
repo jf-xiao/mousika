@@ -4,20 +4,24 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+/**
+ * 用户
+ * @author xiaojf
+ *
+ */
 public class UsUser implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
-	private String userId;
-	private String username;
-	private String password;
-	private String salt;
-	private boolean enable;
-	private String nickName;
-	private String email;
-	private String name;
-	private String address;
-	private Collection<? extends GrantedAuthority> authorities;
+	private String userId;             //用户ID
+	private String username;           //登陆名
+	private String password;           //密码
+	private String salt;               //盐值
+	private boolean enable;            //是否可用
+	private String nickName;           //昵称
+	private String email;              //邮箱
+	private String name;               //名称
+	private String address;            //地址
+	private Collection<? extends GrantedAuthority> authorities;        //权限资源
 	
 	public UsUser() {
 	}
@@ -37,8 +41,6 @@ public class UsUser implements UserDetails {
 		this.address = address;
 	}
 	
-	
-
 	public String getUserId() {
 		return userId;
 	}
@@ -139,7 +141,4 @@ public class UsUser implements UserDetails {
 	public boolean isEnabled() {
 		return this.enable;
 	}
-
-
-
 }
