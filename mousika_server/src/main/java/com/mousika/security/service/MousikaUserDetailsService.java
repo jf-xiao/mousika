@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.mousika.security.model.UsRole;
-import com.mousika.security.model.UsUser;
+import com.mousika.security.domain.UsRole;
+import com.mousika.security.domain.UsUser;
 import com.mousika.security.util.SecurityJdbcUtil;
 
 public class MousikaUserDetailsService implements UserDetailsService {
@@ -56,7 +56,7 @@ public class MousikaUserDetailsService implements UserDetailsService {
             while (rs.next()) {
                 String roleId = rs.getString("ROLE_ID");            //角色ID
                 String name = rs.getString("NAME");                 //名称
-                boolean enable = rs.getBoolean("ENABLE");           //是否可用
+                String enable = rs.getBoolean("ENABLE")+"";           //是否可用
                 UsRole role = new UsRole(roleId, name, enable);
                 roles.add(role);
             }
@@ -87,7 +87,7 @@ public class MousikaUserDetailsService implements UserDetailsService {
                 String username2 = rs.getString("USERNAME");        //登录名
                 String password = rs.getString("PASSWORD");         //密码
                 String salt = rs.getString("SALT");                 //盐值
-                boolean enable = rs.getBoolean("ENABLE");           //是否可用
+                String enable = rs.getBoolean("ENABLE")+"";         //是否可用
                 String nickName = rs.getString("NICKNAME");         //昵称
                 String email = rs.getString("EMAIL");               //邮箱
                 String name = rs.getString("NAME");                 //姓名
