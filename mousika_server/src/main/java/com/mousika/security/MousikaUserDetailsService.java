@@ -1,4 +1,4 @@
-package com.mousika.security.service;
+package com.mousika.security;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;

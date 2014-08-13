@@ -1,4 +1,4 @@
-package com.mousika.security.service;
+package com.mousika.security;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.memory.InMemoryDaoImpl;

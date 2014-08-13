@@ -1,4 +1,4 @@
-package com.mousika.security.service;
+package com.mousika.security;
 
 import java.util.Arrays;
 

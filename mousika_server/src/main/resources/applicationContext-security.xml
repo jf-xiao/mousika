@@ -36,7 +36,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
 	<!-- 增加ip地址校验的cookie方法 -->
 	<beans:bean id="ipTokenBasedRememberService"
-		class="com.mousika.security.service.IpTokenBasedRememberService">
+		class="com.mousika.security.IpTokenBasedRememberService">
 		<!-- cookie 标识符 -->
 		<beans:property name="key" value="I1ToN9SA23GncfcJ" />
 		<!-- user信息 -->
@@ -48,7 +48,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	</beans:bean>
 
 	<!-- 基于内存的修改密码 -->
-	<!-- <beans:bean id="userService" class="com.mousika.security.service.InMemoryChangePassword"> -->
+	<!-- <beans:bean id="userService" class="com.mousika.security.InMemoryChangePassword"> -->
 	<!-- <beans:property name="userProperties"> -->
 	<!-- <beans:props> -->
 	<!-- <beans:prop key="mousika">mousika,ROLE_USER</beans:prop> -->
@@ -66,14 +66,14 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
 	<!-- 访问决策器 -->
 	<beans:bean id="mousikaAccessDecisionManager"
-		class="com.mousika.security.service.MousikaAccessDecisionManager" />
+		class="com.mousika.security.MousikaAccessDecisionManager" />
 	<!-- 用户是否拥有所请求资源的权限 -->
 	<beans:bean id="mousikaSecurityMetadataSource"
-		class="com.mousika.security.service.MousikaSecurityMetadataSource" />
+		class="com.mousika.security.MousikaSecurityMetadataSource" />
 	<!-- 用户所拥有的权限 -->
 	<beans:bean id="mousikaUserDetailsService"
-		class="com.mousika.security.service.MousikaUserDetailsService" />
+		class="com.mousika.security.MousikaUserDetailsService" />
 	<!-- 自定义密码机密方式 -->
 	<beans:bean id="passwordEncoder"
-		class="com.mousika.security.service.MousikaPasswordEncoder" />
+		class="com.mousika.security.MousikaPasswordEncoder" />
 </beans:beans>

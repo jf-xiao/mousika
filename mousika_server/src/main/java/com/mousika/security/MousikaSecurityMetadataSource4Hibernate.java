@@ -1,4 +1,4 @@
-package com.mousika.security.service;
+package com.mousika.security;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -14,14 +16,16 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 
 import com.mousika.security.domain.UsAuthority;
 import com.mousika.security.domain.UsRole;
+import com.mousika.security.service.UsAuthorityService;
 import com.mousika.security.util.SecurityJdbcUtil;
 
-public class MousikaSecurityMetadataSource implements
-        FilterInvocationSecurityMetadataSource {
+public class MousikaSecurityMetadataSource4Hibernate implements FilterInvocationSecurityMetadataSource {
+    @Resource
+    private UsAuthorityService usAuthorityService;
 
     private static Map<String, Collection<ConfigAttribute>> resourceMap = null;// 资源和权限的关系
 
-    public MousikaSecurityMetadataSource() {// 项目初始化过程中，加载资源 和权限
+    public MousikaSecurityMetadataSource4Hibernate() {// 项目初始化过程中，加载资源 和权限
         this.loadResourceDefine();
     }
 
@@ -78,7 +82,7 @@ public class MousikaSecurityMetadataSource implements
      * @author jianfeng.xiao@foxmail.com 2014-4-27 下午1:31:56
      */
     private List<UsAuthority> loadSysAuth() {
-        ResultSet rs = null;
+        /*ResultSet rs = null;
         List<UsAuthority> authorities = new ArrayList<UsAuthority>();
 
         SecurityJdbcUtil sql = new SecurityJdbcUtil();
@@ -100,7 +104,8 @@ public class MousikaSecurityMetadataSource implements
             rs.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
+        List<UsAuthority> authorities = usAuthorityService.getEffectiveAuth();
 
         return authorities;
     }

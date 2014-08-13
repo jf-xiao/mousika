@@ -1,4 +1,4 @@
-package com.mousika.security.service;
+package com.mousika.security;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -16,12 +16,12 @@ import com.mousika.security.domain.UsAuthority;
 import com.mousika.security.domain.UsRole;
 import com.mousika.security.util.SecurityJdbcUtil;
 
-public class MousikaSecurityMetadataSource4Hibernate implements
+public class MousikaSecurityMetadataSource implements
         FilterInvocationSecurityMetadataSource {
 
     private static Map<String, Collection<ConfigAttribute>> resourceMap = null;// 资源和权限的关系
 
-    public MousikaSecurityMetadataSource4Hibernate() {// 项目初始化过程中，加载资源 和权限
+    public MousikaSecurityMetadataSource() {// 项目初始化过程中，加载资源 和权限
         this.loadResourceDefine();
     }
 

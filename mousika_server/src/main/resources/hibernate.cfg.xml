@@ -3,7 +3,7 @@
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
-    <session-factory name="foo">
+    <session-factory>
 
     </session-factory>
 </hibernate-configuration>

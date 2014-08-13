@@ -1,4 +1,4 @@
-package com.mousika.security.service;
+package com.mousika.security;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.security.authentication.encoding.PasswordEncoder;

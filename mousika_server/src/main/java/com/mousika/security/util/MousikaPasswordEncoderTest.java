@@ -1,6 +1,6 @@
 package com.mousika.security.util;
 
-import com.mousika.security.service.MousikaPasswordEncoder;
+import com.mousika.security.MousikaPasswordEncoder;
 
 public class MousikaPasswordEncoderTest {
 

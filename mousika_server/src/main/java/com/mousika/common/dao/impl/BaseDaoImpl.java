@@ -25,7 +25,6 @@ import com.mousika.common.util.EmptyUtil;
  * 
  * @param <T>
  */
-@Transactional
 public class BaseDaoImpl<T> implements BaseDao<T> {
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory; // 会话工厂
