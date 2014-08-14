@@ -39,8 +39,6 @@ public class UsRole implements java.io.Serializable {
         this.enable = enable;
     }
 
-
-
     @GenericGenerator(name = "generator", strategy = "uuid.hex")
     @Id
     @GeneratedValue(generator = "generator")

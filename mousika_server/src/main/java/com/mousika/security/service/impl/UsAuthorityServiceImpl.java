@@ -14,8 +14,9 @@ import com.mousika.security.service.UsAuthorityService;
 
 /**
  * 权限SERVICE实现类
+ * 
  * @author xiaojf
- *
+ * 
  */
 @Transactional
 @Service(value="usAuthorityService")

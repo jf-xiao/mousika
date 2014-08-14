@@ -16,32 +16,34 @@ import com.mousika.security.service.UsRoleService;
 
 /**
  * 角色SERVICE实现类
+ * 
  * @author xiaojf
- *
+ * 
  */
 @Transactional
-@Service(value="usRoleService")
+@Service(value = "usRoleService")
 public class UsRoleServiceImpl implements UsRoleService {
-    @Resource(name="usRoleAuthDao")
+    @Resource(name = "usRoleAuthDao")
     private UsRoleAuthDao usRoleAuthDao;
-    @Resource(name="usRoleDao")
+    @Resource(name = "usRoleDao")
     private UsRoleDao usRoleDao;
+
     @Override
     public List<UsRole> getRolesByAuth(String authId) {
-        List<UsRoleAuth> roleAuths =  usRoleAuthDao.getByAuthId(authId);
+        List<UsRoleAuth> roleAuths = usRoleAuthDao.getByAuthId(authId);
         List<String> roleIds = new ArrayList<String>();
         List<UsRole> roles = new ArrayList<UsRole>();
-        if(roleAuths != null){
-            for(UsRoleAuth roleAuth : roleAuths){
+        if (roleAuths != null) {
+            for (UsRoleAuth roleAuth : roleAuths) {
                 roleIds.add(roleAuth.getRoleId());
             }
-            
+
             roles = usRoleDao.get(roleIds);
         }
         return roles;
     }
-    
-    public void addRole(UsRole role){
+
+    public void addRole(UsRole role) {
         usRoleDao.add(role);
     }
 }
