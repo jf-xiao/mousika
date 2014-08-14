@@ -4,7 +4,11 @@ import java.util.List;
 
 import com.mousika.security.domain.UsRole;
 
-
+/**
+ * 角色SERVICE
+ * @author xiaojf
+ *
+ */
 public interface UsRoleService {
     /**
      * 根据权限ID获取所需角色

@@ -10,7 +10,11 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 import org.hibernate.annotations.GenericGenerator;
 
-
+/**
+ * 角色
+ * @author xiaojf
+ *
+ */
 @Entity
 @Table(name = "us_role", catalog = "mousika")
 public class UsRole implements java.io.Serializable {

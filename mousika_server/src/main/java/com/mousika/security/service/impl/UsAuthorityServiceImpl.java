@@ -12,6 +12,11 @@ import com.mousika.security.dao.UsAuthorityDao;
 import com.mousika.security.domain.UsAuthority;
 import com.mousika.security.service.UsAuthorityService;
 
+/**
+ * 权限SERVICE实现类
+ * @author xiaojf
+ *
+ */
 @Transactional
 @Service(value="usAuthorityService")
 public class UsAuthorityServiceImpl implements UsAuthorityService {

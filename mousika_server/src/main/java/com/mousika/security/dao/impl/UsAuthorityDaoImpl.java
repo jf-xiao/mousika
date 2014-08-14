@@ -9,7 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mousika.common.dao.impl.BaseDaoImpl;
 import com.mousika.security.dao.UsAuthorityDao;
 import com.mousika.security.domain.UsAuthority;
-
+/**
+ * 权限DAO实现类
+ * @author xiaojf
+ *
+ */
 @Repository(value="usAuthorityDao")
 public class UsAuthorityDaoImpl extends BaseDaoImpl<UsAuthority> implements UsAuthorityDao {
 

@@ -6,7 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
-
+/**
+ * 用户-角色
+ * @author xiaojf
+ *
+ */
 @Entity
 @Table(name = "us_user_role", catalog = "mousika")
 public class UsUserRole implements java.io.Serializable {

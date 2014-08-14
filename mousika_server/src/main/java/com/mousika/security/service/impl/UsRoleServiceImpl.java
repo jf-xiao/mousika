@@ -14,6 +14,11 @@ import com.mousika.security.domain.UsRole;
 import com.mousika.security.domain.UsRoleAuth;
 import com.mousika.security.service.UsRoleService;
 
+/**
+ * 角色SERVICE实现类
+ * @author xiaojf
+ *
+ */
 @Transactional
 @Service(value="usRoleService")
 public class UsRoleServiceImpl implements UsRoleService {

@@ -7,7 +7,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
-
+/**
+ * 角色权限
+ * @author xiaojf
+ *
+ */
 @Entity
 @Table(name = "us_role_auth", catalog = "mousika")
 public class UsRoleAuth implements java.io.Serializable {

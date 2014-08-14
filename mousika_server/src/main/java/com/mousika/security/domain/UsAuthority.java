@@ -9,7 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import org.hibernate.annotations.GenericGenerator;
-
+/**
+ * 权限
+ * @author xiaojf
+ *
+ */
 @Entity
 @Table(name = "us_authority", catalog = "mousika")
 public class UsAuthority implements java.io.Serializable {

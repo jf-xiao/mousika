@@ -4,7 +4,11 @@ import java.util.List;
 
 import com.mousika.common.dao.BaseDao;
 import com.mousika.security.domain.UsRoleAuth;
-
+/**
+ * 角色-权限DAO
+ * @author xiaojf
+ *
+ */
 public interface UsRoleAuthDao extends BaseDao<UsRoleAuth> {
     /**
      * 获取某个权限所需角色

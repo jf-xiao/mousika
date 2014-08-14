@@ -8,7 +8,11 @@ import org.springframework.stereotype.Repository;
 import com.mousika.common.dao.impl.BaseDaoImpl;
 import com.mousika.security.dao.UsRoleAuthDao;
 import com.mousika.security.domain.UsRoleAuth;
-
+/**
+ * 角色-权限 DAO实现类
+ * @author xiaojf
+ *
+ */
 @Repository(value="usRoleAuthDao")
 public class UsRoleAuthDaoImpl extends BaseDaoImpl<UsRoleAuth> implements UsRoleAuthDao {
 

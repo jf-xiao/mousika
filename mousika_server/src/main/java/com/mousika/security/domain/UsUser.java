@@ -15,7 +15,11 @@ import org.hibernate.annotations.GenericGenerator;
 import org.junit.Ignore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+/**
+ * 用户
+ * @author xiaojf
+ *
+ */
 @Entity
 @Table(name = "us_user", catalog = "mousika")
 public class UsUser implements java.io.Serializable , UserDetails{
