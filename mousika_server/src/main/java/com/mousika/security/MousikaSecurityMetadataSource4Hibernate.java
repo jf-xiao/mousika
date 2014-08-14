@@ -1,6 +1,5 @@
 package com.mousika.security;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.persistence.PrePersist;
 
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -17,11 +17,13 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import com.mousika.security.domain.UsAuthority;
 import com.mousika.security.domain.UsRole;
 import com.mousika.security.service.UsAuthorityService;
-import com.mousika.security.util.SecurityJdbcUtil;
+import com.mousika.security.service.UsRoleService;
 
 public class MousikaSecurityMetadataSource4Hibernate implements FilterInvocationSecurityMetadataSource {
-    @Resource
+    @Resource(name="usAuthorityService")
     private UsAuthorityService usAuthorityService;
+    @Resource(name="usRoleService")
+    private UsRoleService usRoleService;
 
     private static Map<String, Collection<ConfigAttribute>> resourceMap = null;// 资源和权限的关系
 
@@ -118,7 +120,7 @@ public class MousikaSecurityMetadataSource4Hibernate implements FilterInvocation
      * @author jianfeng.xiao@foxmail.com 2014-4-27 下午1:44:08
      */
     private List<UsRole> loadRoldWithAuthId(String authId) {
-        List<UsRole> roles = new ArrayList<UsRole>();
+        /*List<UsRole> roles = new ArrayList<UsRole>();
         ResultSet rs = null;
         SecurityJdbcUtil sql = new SecurityJdbcUtil();
         //获取当前访问用户具有的可用角色
@@ -138,7 +140,9 @@ public class MousikaSecurityMetadataSource4Hibernate implements FilterInvocation
             rs.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
+        
+        List<UsRole> roles = usRoleService.getRolesByAuth(authId);
 
         return roles;
     }

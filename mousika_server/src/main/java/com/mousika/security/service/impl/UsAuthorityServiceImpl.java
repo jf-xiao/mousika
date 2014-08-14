@@ -1,5 +1,6 @@
 package com.mousika.security.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -19,7 +20,11 @@ public class UsAuthorityServiceImpl implements UsAuthorityService {
 
     @Override
     public List<UsAuthority> getEffectiveAuth() {
-        return usAuthorityDao.getEffectiveAuth();
+        List<UsAuthority> authorities = usAuthorityDao.getEffectiveAuth();
+        if(authorities == null){
+            authorities = new ArrayList<UsAuthority>();
+        }
+        return authorities;
     }
 
 }

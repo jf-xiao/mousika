@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,6 +22,7 @@ public class UsAuthorityServiceImplTest {
     private UsAuthorityService authorityService;
     
     @Test
+    @Ignore
     public void testGetEffectiveAuth() {
         List<UsAuthority> list = authorityService.getEffectiveAuth();
         System.out.println(list.size()+"--------------------");

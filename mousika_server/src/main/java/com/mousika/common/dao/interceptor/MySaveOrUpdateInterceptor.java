@@ -13,16 +13,27 @@ import org.hibernate.type.Type;
 public class MySaveOrUpdateInterceptor extends EmptyInterceptor {
     @Override
     public boolean onSave(Object entity, Serializable id, Object[] state,String[] propertyNames, Type[] types) {
+        
+        
         for (int i = 0; i < propertyNames.length; i++) {
-            if((id == null  || id.equals("")) && "createTime".equals(propertyNames[i])){
-                state[i] = new Date();
+            if("createTime".equals(propertyNames[i])){
+                if(state[i] == null || "".equals(state[i])){
+                    state[i] = new Date();
+                }
             }
             
             if("updateTime".equals(propertyNames[i])){
                 state[i] = new Date();
             }
+            
+            if("logDel".equals(propertyNames[i])){
+                if(state[i] == null || "".equals(state[i])){
+                    state[i] = "false";
+                }
+            }
         }
         
         return super.onSave(entity, id, state, propertyNames, types);
     }
+    
 }
