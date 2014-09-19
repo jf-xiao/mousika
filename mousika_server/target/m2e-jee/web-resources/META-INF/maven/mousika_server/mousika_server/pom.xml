@@ -146,6 +146,14 @@
 			<version>${springframework.version}</version>
 		</dependency>
 		<!-- spring mvc END -->
+		<!-- memcached START -->
+		<dependency>
+		    <groupId>com.google.code.simple-spring-memcached</groupId>
+		    <artifactId>simple-spring-memcached</artifactId>
+		    <version>3.5.0</version>
+		</dependency>
+		<!-- memcached END -->
+		<!-- hibernate START -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
