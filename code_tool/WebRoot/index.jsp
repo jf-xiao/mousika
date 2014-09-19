@@ -16,6 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
+<<<<<<< HEAD
         <div id="main" style="width: 900px;height: 600px;margin: 0 auto;">
             <div id="main_title" style="background: black;height: 30px;text-align: center;line-height: 30px;color: white;">代码生成器</div>
             <div style="background-color: gray;height: 100%;">
@@ -77,5 +78,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
             
         </div>
+=======
+    这是代码生成器 顶顶顶顶顶顶顶顶顶顶顶顶顶顶大大大    <br>
+>>>>>>> origin/master
   </body>
 </html>
