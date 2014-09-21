@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<config>
+    <databases>
+        <database key="选择"></database>
+        <database key="MySql">
+            <driverClass>com.mysql.jdbc.Driver</driverClass>
+            <url>jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8</url>
+            <username>root</username>
+            <password>root</password>
+        </database>
+        <database key="Oracle">
+            <driverClass>oracle.jdbc.driver.OracleDriver</driverClass>
+            <url>jdbc:oracle:thin:@192.168.0.177:1521:[sid]</url>
+            <username>scott</username>
+            <password>tiger</password>
+        </database>
+        <database key="SQLServer2000">
+            <driverClass>com.microsoft.jdbc.sqlserver.SQLServerDriver</driverClass>
+            <url>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=[database]</url>
+            <username></username>
+            <password></password>
+        </database>
+        <database key="SQLServer2005">
+            <driverClass>com.microsoft.sqlserver.jdbc.SQLServerDriver</driverClass>
+            <url>jdbc:sqlserver://192.168.0.98:1433;DatabaseName=[database]</url>
+            <username></username>
+            <password></password>
+        </database>
+        <database key="JTDs for SQLServer ">
+            <driverClass>net.sourceforge.jtds.jdbc.Driver</driverClass>
+            <url>jdbc:jtds:sqlserver://192.168.0.102:1433/[database];tds=8.0;lastupdatecount=true</url>
+            <username></username>
+            <password></password>
+        </database>
+        <database key="PostgreSql">
+            <driverClass>org.postgresql.Driver</driverClass>
+            <url>jdbc:postgresql://localhost/[database]</url>
+            <username></username>
+            <password></password>
+        </database>
+        <database key="Sybase">
+            <driverClass>com.sybase.jdbc.SybDriver</driverClass>
+            <url>jdbc:sybase:Tds:localhost:5007/[database]</url>
+            <username></username>
+            <password></password>
+        </database>
+        <database key="DB2">
+            <driverClass>com.ibm.db2.jdbc.app.DB2Driver</driverClass>
+            <url>jdbc:db2://localhost:5000/[database]</url>
+            <username></username>
+            <password></password>
+        </database>
+        <database key="HsqlDB">
+            <driverClass>org.hsqldb.jdbcDriver</driverClass>
+            <url>jdbc:hsqldb:mem:generatorDB</url>
+            <username></username>
+            <password></password>
+        </database>
+        <database key="Derby">
+            <driverClass>org.apache.derby.jdbc.ClientDriver</driverClass>
+            <url>jdbc:derby://localhost/databaseName</url>
+            <username></username>
+            <password></password>
+        </database>
+    </databases>
+    <types>
+        <type key="java_typemapping.java.sql.Timestamp"><value>java.util.Date</value></type>
+        <type key="java_typemapping.java.sql.Date">java.util.Date</type>
+        <type key="java_typemapping.java.sql.Time">java.util.Date</type>  
+        <type key="java_typemapping.java.lang.Byte">java.lang.Integer</type>
+        <type key="java_typemapping.java.lang.Short">java.lang.Integer</type>
+        <type key="java_typemapping.java.math.BigDecimal">java.lang.Long</type>
+    </types>
+</config>

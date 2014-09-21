@@ -312,18 +312,18 @@ public class Column {
 		return false;
 	}
 
-	/**
-	 * Describe what the method does
-	 * 
-	 * @return Describe the return value
-	 * @todo-javadoc Write javadocs for method
-	 * @todo-javadoc Write javadocs for return value
-	 */
-	public String toString() {
-		return getSqlName();
-	}
+	
 
-	/**
+	@Override
+    public String toString() {
+        return "Column [_table=" + _table + ", _sqlType=" + _sqlType + ", _sqlTypeName=" + _sqlTypeName + ", _sqlName=" + _sqlName + ", _isPk=" + _isPk + ", _isFk=" + _isFk + ", _size=" + _size
+                + ", _decimalDigits=" + _decimalDigits + ", _isNullable=" + _isNullable + ", _isIndexed=" + _isIndexed + ", _isUnique=" + _isUnique + ", _defaultValue=" + _defaultValue
+                + ", _remarks=" + _remarks + ", hasOne=" + hasOne + ", hasMany=" + hasMany + ", enumString=" + enumString + ", javaType=" + javaType + ", columnAlias=" + columnAlias + ", columnName="
+                + columnName + ", asType=" + asType + ", enumClassName=" + enumClassName + ", updatable=" + updatable + ", insertable=" + insertable + ", hibernateValidatorExprssion="
+                + hibernateValidatorExprssion + "]";
+    }
+
+    /**
 	 * Describe what the method does
 	 * 
 	 * @return Describe the return value

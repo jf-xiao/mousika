@@ -333,11 +333,15 @@ public class Table {
 		return importedKeys;
 	}
 	
-	public String toString() {
-		return "Database Table:"+getSqlName()+" to ClassName:"+getClassName();
-	}
 	
-	String catalog = TableFactory.getInstance().getCatalog();
+	
+	@Override
+    public String toString() {
+        return "Table [sqlName=" + sqlName + ", remarks=" + remarks + ", className=" + className + ", ownerSynonymName=" + ownerSynonymName + ", columns=" + columns + ", primaryKeyColumns="
+                + primaryKeyColumns + ", catalog=" + catalog + ", schema=" + schema + ", tableAlias=" + tableAlias + ", exportedKeys=" + exportedKeys + ", importedKeys=" + importedKeys + "]";
+    }
+	
+    String catalog = TableFactory.getInstance().getCatalog();
 	String schema = TableFactory.getInstance().getSchema();
 	
 	private String tableAlias;
