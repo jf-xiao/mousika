@@ -18,7 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.mousika.tool.bean.Database;
+import com.mousika.tool.bean.DatabaseInfo;
 import com.mousika.tool.core.Config;
 /**
  * 主界面
@@ -98,7 +98,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String dbName = ((JComboBox)e.getSource()).getSelectedItem().toString();
-                Database db = Config.getDatabase(dbName);
+                DatabaseInfo db = Config.getDatabase(dbName);
                 driverField.setText(db.getDriverClass());
                 urlField.setText(db.getUrl());
                 usernameField.setText(db.getUsername());
@@ -189,9 +189,9 @@ public class MainFrame extends JFrame {
             public void keyReleased(KeyEvent e) {
                 String module = ((JTextField)e.getComponent()).getText();
                 modelPack.setText(module+".model");
-                actionPack.setText(module+"controller");
-                servicePack.setText(module+"service");
-                serviceImpPack.setText(module+"service.impl");
+                actionPack.setText(module+".controller");
+                servicePack.setText(module+".service");
+                serviceImpPack.setText(module+".service.impl");
                 daoPack.setText(module+".dao");
                 daoImplPack.setText(module+".dao.impl");
             }

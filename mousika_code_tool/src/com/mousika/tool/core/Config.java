@@ -7,8 +7,8 @@ import java.util.Vector;
 
 import org.w3c.dom.Element;
 
-import com.mousika.tool.bean.Database;
-import com.mousika.tool.bean.Type;
+import com.mousika.tool.bean.DatabaseInfo;
+import com.mousika.tool.bean.TypeInfo;
 import com.mousika.tool.util.XmlUtil;
 
 /**
@@ -30,15 +30,15 @@ public class Config {
      * 获取数据库配置信息
      * @return
      */
-    public static List<Database> getDatabases() {
+    public static List<DatabaseInfo> getDatabases() {
         Element configRoot = XmlUtil.getRootElementFromStream(getConfigInputStream());
         Element dbRoot = XmlUtil.getChildElement(configRoot, "databases");
         List<Element> dbEls = XmlUtil.getElements(dbRoot, "database");
 
-        List<Database> dbs = new ArrayList<Database>();
+        List<DatabaseInfo> dbs = new ArrayList<DatabaseInfo>();
 
         for (Element element : dbEls) {
-            Database db = new Database(element.getAttribute("key"), XmlUtil.getElementValue(element, "driverClass"),
+            DatabaseInfo db = new DatabaseInfo(element.getAttribute("key"), XmlUtil.getElementValue(element, "driverClass"),
                     XmlUtil.getElementValue(element, "url"), XmlUtil.getElementValue(element, "username"),
                     XmlUtil.getElementValue(element, "password"));
             dbs.add(db);
@@ -68,7 +68,7 @@ public class Config {
      * @param databaseName
      * @return
      */
-    public static Database getDatabase(String databaseName){
+    public static DatabaseInfo getDatabase(String databaseName){
         Element configRoot = XmlUtil.getRootElementFromStream(getConfigInputStream());
         Element dbRoot = XmlUtil.getChildElement(configRoot, "databases");
         List<Element> dbEls = XmlUtil.getElements(dbRoot, "database");
@@ -76,7 +76,7 @@ public class Config {
         for (Element element : dbEls) {
             String key = element.getAttribute("key");
             if(databaseName.equals(key)){
-                return new Database(key, XmlUtil.getElementValue(element, "driverClass"),
+                return new DatabaseInfo(key, XmlUtil.getElementValue(element, "driverClass"),
                         XmlUtil.getElementValue(element, "url"), XmlUtil.getElementValue(element, "username"),
                         XmlUtil.getElementValue(element, "password"));
             }
@@ -89,14 +89,14 @@ public class Config {
      * 获取类型配置信息
      * @return
      */
-    public static List<Type> getTypes(){
+    public static List<TypeInfo> getTypes(){
         Element configRoot = XmlUtil.getRootElementFromStream(getConfigInputStream());
         Element typesRoot = XmlUtil.getChildElement(configRoot, "types");
         List<Element> typeEls = XmlUtil.getElements(typesRoot, "type");
-        List<Type> types = new ArrayList<Type>();
+        List<TypeInfo> types = new ArrayList<TypeInfo>();
         
         for (Element element : typeEls) {
-            types.add(new Type(element.getAttribute("key"), element.getTextContent()));
+            types.add(new TypeInfo(element.getAttribute("key"), element.getTextContent()));
         }
         return types;
     }
@@ -105,7 +105,7 @@ public class Config {
      * 根据类型名称获取类型配置信息
      * @return
      */
-    public static Type getType(String typeName){
+    public static TypeInfo getType(String typeName){
         Element configRoot = XmlUtil.getRootElementFromStream(getConfigInputStream());
         Element typesRoot = XmlUtil.getChildElement(configRoot, "types");
         List<Element> typeEls = XmlUtil.getElements(typesRoot, "type");
@@ -113,7 +113,7 @@ public class Config {
         for (Element element : typeEls) {
             String key = element.getAttribute("key");
             if(key.equals(typeName)){
-                return new Type(key, element.getTextContent());
+                return new TypeInfo(key, element.getTextContent());
             }
         }
         
