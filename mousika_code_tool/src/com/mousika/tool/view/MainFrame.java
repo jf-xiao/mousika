@@ -6,20 +6,40 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
+import com.mousika.tool.bean.ColumnInfo;
+import com.mousika.tool.bean.ConfigInfo;
+import com.mousika.tool.bean.ConstantMap;
+import com.mousika.tool.bean.Constants;
 import com.mousika.tool.bean.DatabaseInfo;
+import com.mousika.tool.bean.JdbcConfigInfo;
+import com.mousika.tool.bean.TableInfo;
+import com.mousika.tool.bean.TemplateConfigInfo;
 import com.mousika.tool.core.Config;
+import com.mousika.tool.core.MainOperate;
 /**
  * 主界面
  * @author xiaojf
@@ -44,6 +64,16 @@ public class MainFrame extends JFrame {
     private JTextField daoTemp;
     private JTextField daoImplTemp;
     private JTextField tableNameField;
+    private JTable tableGrid;
+    private JTable columnGrid;
+    private DefaultTableModel table_tmd;
+    private DefaultTableModel column_tmd;
+    private JCheckBox modelCB;
+    private JCheckBox actionCB;
+    private JCheckBox serviceCB;
+    private JCheckBox serviceImplCB;
+    private JCheckBox daoCB;
+    private JCheckBox daoImplCB;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -56,6 +86,46 @@ public class MainFrame extends JFrame {
                 }
             }
         });
+    }
+    
+    public void loadTableInfo(DatabaseInfo databaseInfo){
+        if(databaseInfo == null){
+            JOptionPane.showMessageDialog(null, "数据库连接不能为空", "错误", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        if(databaseInfo.getDriverClass() == null || "".equals(databaseInfo.getDriverClass())){
+            JOptionPane.showMessageDialog(null, "driverClass不能为空", "错误", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        if(databaseInfo.getUrl() == null || "".equals(databaseInfo.getUrl())){
+            JOptionPane.showMessageDialog(null, "url不能为空", "错误", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        if(databaseInfo.getUsername() == null || "".equals(databaseInfo.getUsername())){
+            JOptionPane.showMessageDialog(null, "username不能为空", "错误", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        if(databaseInfo.getPassword() == null || "".equals(databaseInfo.getPassword())){
+            JOptionPane.showMessageDialog(null, "password不能为空", "错误", JOptionPane.ERROR_MESSAGE);
+            return ;
+        }
+        
+        List<TableInfo> tableInfos =MainOperate.loadTableInfo(databaseInfo);
+        table_tmd.setRowCount(0);
+        
+        int len = tableInfos.size();
+        
+        for(int i = 0 ; i <len ;i++) {
+            Object[] obj = new Object[3];
+            obj[0] = tableInfos.get(i).isEnable();
+            obj[1] = tableInfos.get(i).getTableName().toUpperCase();
+            obj[2] = tableInfos.get(i).getRemarks();
+            table_tmd.addRow(obj);
+        }
     }
 
     public MainFrame() {
@@ -138,14 +208,81 @@ public class MainFrame extends JFrame {
         passwordField.setColumns(10);
         
         JButton refreshButt = new JButton("Refresh");
+        refreshButt.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String driverClass = driverField.getText();
+                String url = urlField.getText();
+                String username = usernameField.getText();
+                String password = passwordField.getText();
+                
+                DatabaseInfo databaseInfo = new DatabaseInfo("", driverClass, url, username, password);
+                loadTableInfo(databaseInfo);
+            }
+        });
         refreshButt.setBounds(10, 153, 93, 23);
         panel.add(refreshButt);
         
         JButton generatorButt = new JButton("Generator");
+        generatorButt.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean isSelected = false;
+                for(TableInfo info : ConfigInfo.tableInfos){
+                    if(info.isEnable() == true){
+                        isSelected = true;
+                        break;
+                    }
+                }
+                
+                int rowCount = tableGrid.getModel().getRowCount();
+                for(int i = 0 ;i< rowCount;i++){
+                    boolean enable = Boolean.parseBoolean(tableGrid.getModel().getValueAt(i, 0)+"");
+                    if(enable){
+                        ConfigInfo.tableInfos.get(i).setEnable(true);
+                    }
+                }
+                
+                if(isSelected == false){
+                    JOptionPane.showMessageDialog(null, "请至少选择一张表", "错误", JOptionPane.ERROR_MESSAGE);
+                    return ;
+                }
+                
+                if(moduleName.getText() == null || "".equals(moduleName.getText())){
+                    JOptionPane.showMessageDialog(null, "包路径未设置", "错误", JOptionPane.ERROR_MESSAGE);
+                    return ;
+                }
+                
+                JdbcConfigInfo jdbcConfigInfo = new JdbcConfigInfo(driverField.getText(), urlField.getText(), usernameField.getText(), passwordField.getText());
+                ConfigInfo.jdbcConfigInfo = jdbcConfigInfo;
+                
+                Map<Constants ,TemplateConfigInfo> tempConfigMap = new HashMap<Constants, TemplateConfigInfo>();
+                tempConfigMap.put(Constants.MODEL, new TemplateConfigInfo(modelPack.getText(), modelTemp.getText(), modelCB.isSelected()));
+                tempConfigMap.put(Constants.ACTION, new TemplateConfigInfo(actionPack.getText(), actionTemp.getText(), actionCB.isSelected()));
+                tempConfigMap.put(Constants.SERVICE, new TemplateConfigInfo(servicePack.getText(), serviceTemp.getText(), serviceCB.isSelected()));
+                tempConfigMap.put(Constants.SERVICE_IMPL, new TemplateConfigInfo(serviceImpPack.getText(), serviceImplTemp.getText(), serviceImplCB.isSelected()));
+                tempConfigMap.put(Constants.DAO, new TemplateConfigInfo(daoPack.getText(), daoTemp.getText(), daoCB.isSelected()));
+                tempConfigMap.put(Constants.DAO_IMPL, new TemplateConfigInfo(daoImplPack.getText(), daoImplTemp.getText(), daoImplCB.isSelected()));
+                ConfigInfo.tempConfigMap = tempConfigMap;
+                
+                String result = MainOperate.generatorFiles();
+                
+                JOptionPane.showMessageDialog(null, result, "提示", JOptionPane.WARNING_MESSAGE);
+            }
+        });
         generatorButt.setBounds(108, 153, 93, 23);
         panel.add(generatorButt);
         
         JButton exitButt = new JButton("Exit");
+        exitButt.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(EXIT_ON_CLOSE);
+            }
+        });
         exitButt.setBounds(205, 153, 93, 23);
         panel.add(exitButt);
         
@@ -251,32 +388,32 @@ public class MainFrame extends JFrame {
         allCB.setBounds(269, 6, 30, 23);
         panel_1.add(allCB);
         
-        JCheckBox modelCB = new JCheckBox("");
+        modelCB = new JCheckBox("");
         modelCB.setSelected(true);
         modelCB.setBounds(269, 31, 30, 23);
         panel_1.add(modelCB);
         
-        JCheckBox actionCB = new JCheckBox("");
+        actionCB = new JCheckBox("");
         actionCB.setSelected(true);
         actionCB.setBounds(269, 56, 30, 23);
         panel_1.add(actionCB);
         
-        JCheckBox serviceCB = new JCheckBox("");
+        serviceCB = new JCheckBox("");
         serviceCB.setSelected(true);
         serviceCB.setBounds(269, 81, 30, 23);
         panel_1.add(serviceCB);
         
-        JCheckBox serviceImplCB = new JCheckBox("");
+        serviceImplCB = new JCheckBox("");
         serviceImplCB.setSelected(true);
         serviceImplCB.setBounds(269, 106, 30, 23);
         panel_1.add(serviceImplCB);
         
-        JCheckBox daoCB = new JCheckBox("");
+        daoCB = new JCheckBox("");
         daoCB.setSelected(true);
         daoCB.setBounds(269, 131, 30, 23);
         panel_1.add(daoCB);
         
-        JCheckBox daoImplCB = new JCheckBox("");
+        daoImplCB = new JCheckBox("");
         daoImplCB.setSelected(true);
         daoImplCB.setBounds(269, 156, 30, 23);
         panel_1.add(daoImplCB);
@@ -317,38 +454,228 @@ public class MainFrame extends JFrame {
         panel_1.add(daoImplTemp);
         daoImplTemp.setColumns(10);
         
-        JButton btnNewButton = new JButton("...");
-        btnNewButton.setBounds(515, 31, 54, 23);
-        panel_1.add(btnNewButton);
+        JButton modelTmpPath = new JButton("...");
+        modelTmpPath.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setApproveButtonText("确定");
+                fileChooser.showDialog(new JLabel(), "选择");
+                File file = fileChooser.getSelectedFile();
+                if(file != null){
+                    modelTemp.setText(file.getAbsolutePath());
+                }
+            }
+        });
+        modelTmpPath.setBounds(515, 31, 54, 23);
+        panel_1.add(modelTmpPath);
         
-        JButton button = new JButton("...");
-        button.setBounds(515, 56, 54, 23);
-        panel_1.add(button);
+        JButton actionTmpPath = new JButton("...");
+        actionTmpPath.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setApproveButtonText("确定");
+                fileChooser.showDialog(new JLabel(), "选择");
+                File file = fileChooser.getSelectedFile();
+                if(file != null){
+                    actionTemp.setText(file.getAbsolutePath());
+                }
+            }
+        });
+        actionTmpPath.setBounds(515, 56, 54, 23);
+        panel_1.add(actionTmpPath);
         
-        JButton button_1 = new JButton("...");
-        button_1.setBounds(515, 81, 54, 23);
-        panel_1.add(button_1);
+        JButton serviceTmpPath = new JButton("...");
+        serviceTmpPath.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setApproveButtonText("确定");
+                fileChooser.showDialog(new JLabel(), "选择");
+                File file = fileChooser.getSelectedFile();
+                if(file != null){
+                    serviceTemp.setText(file.getAbsolutePath());
+                }
+            }
+        });
+        serviceTmpPath.setBounds(515, 81, 54, 23);
+        panel_1.add(serviceTmpPath);
         
-        JButton button_2 = new JButton("...");
-        button_2.setBounds(515, 106, 54, 23);
-        panel_1.add(button_2);
+        JButton serviceImplTmpPath = new JButton("...");
+        serviceImplTmpPath.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setApproveButtonText("确定");
+                fileChooser.showDialog(new JLabel(), "选择");
+                File file = fileChooser.getSelectedFile();
+                if(file != null){
+                    serviceImplTemp.setText(file.getAbsolutePath());
+                }
+            }
+        });
+        serviceImplTmpPath.setBounds(515, 106, 54, 23);
+        panel_1.add(serviceImplTmpPath);
         
-        JButton button_3 = new JButton("...");
-        button_3.setBounds(515, 131, 54, 23);
-        panel_1.add(button_3);
+        JButton daoTmpPath = new JButton("...");
+        daoTmpPath.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setApproveButtonText("确定");
+                fileChooser.showDialog(new JLabel(), "选择");
+                File file = fileChooser.getSelectedFile();
+                if(file != null){
+                    daoTemp.setText(file.getAbsolutePath());
+                }
+            }
+        });
+        daoTmpPath.setBounds(515, 131, 54, 23);
+        panel_1.add(daoTmpPath);
         
-        JButton button_4 = new JButton("...");
-        button_4.setBounds(515, 156, 54, 23);
-        panel_1.add(button_4);
-        
-        JPanel panel_2 = new JPanel();
+        JButton daoImplTmpPath = new JButton("...");
+        daoImplTmpPath.setBounds(515, 156, 54, 23);
+        daoImplTmpPath.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setApproveButtonText("确定");
+                fileChooser.showDialog(new JLabel(), "选择");
+                File file = fileChooser.getSelectedFile();
+                if(file != null){
+                    daoImplTemp.setText(file.getAbsolutePath());
+                }
+            }
+        });
+        panel_1.add(daoImplTmpPath);
+        //------------------------------------------------------
+        JScrollPane  panel_2 = new JScrollPane ();
         panel_2.setBounds(10, 35, 311, 356);
         getContentPane().add(panel_2);
         
-        JPanel panel_3 = new JPanel();
+        String[][] row=new String[20][2];
+        String[] column={"","表名","注释"};
+        table_tmd=new DefaultTableModel(row,column);
+        
+        tableGrid = new JTable(table_tmd);
+        
+        TableColumn   aColumn   =   tableGrid.getColumnModel().getColumn(0);  
+        aColumn.setCellEditor(tableGrid.getDefaultEditor(Boolean.class));  
+        aColumn.setCellRenderer(tableGrid.getDefaultRenderer(Boolean.class));
+        
+        tableGrid.addMouseListener(new MouseListener() {
+            
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String table = tableGrid.getModel().getValueAt(tableGrid.getSelectedRow(), 1)+"";
+                //ConfigInfo.tableInfos.get(tableGrid.getSelectedRow()).setEnable(Boolean.parseBoolean(tableGrid.getModel().getValueAt(tableGrid.getSelectedRow(), 0)+""));
+                List<ColumnInfo> columnInfos = ConfigInfo.tabAndcolMap.get(table);
+                
+                column_tmd.setRowCount(0);
+                
+                int len = columnInfos.size();
+                
+                for(int i = 0 ; i <len ;i++) {
+                    Object[] obj = new Object[6];
+                    ColumnInfo columnInfo = columnInfos.get(i);
+                    obj[0] = columnInfo.isEnable();
+                    obj[1] = columnInfo.getColumnName();
+                    obj[2] = columnInfo.getTypeName();
+                    obj[3] = ConstantMap.sql2JavaMap.get(columnInfo.getTypeName());
+                    obj[4] = columnInfo.getColumnSize();
+                    obj[5] = columnInfo.getRemarks();
+                    column_tmd.addRow(obj);
+                }
+                
+                
+            }
+        });
+        
+        panel_2.setViewportView(tableGrid);
+        //-------------------------------------------------------
+        
+        JScrollPane panel_3 = new JScrollPane();
         panel_3.setBounds(331, 35, 571, 356);
         getContentPane().add(panel_3);
         
+        String[][] row2=new String[20][6];
+        String[] column2={"","列名","SQL类型","JAVA类型","大小","注释"};
+        column_tmd=new DefaultTableModel(row2,column2);
+        
+        columnGrid = new JTable(column_tmd);
+        columnGrid.addMouseListener(new MouseListener() {
+            
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                boolean colEnable = Boolean.parseBoolean(columnGrid.getModel().getValueAt(columnGrid.getSelectedRow(), 0)+"");
+                String table = tableGrid.getModel().getValueAt(tableGrid.getSelectedRow(), 1)+"";
+                List<ColumnInfo> columnInfos = ConfigInfo.tabAndcolMap.get(table.toUpperCase());
+                columnInfos.get(columnGrid.getSelectedRow()).setEnable(colEnable);
+            }
+        });
+        
+        TableColumn   aColumn2   =   columnGrid.getColumnModel().getColumn(0);
+        aColumn2.setCellEditor(columnGrid.getDefaultEditor(Boolean.class));  
+        aColumn2.setCellRenderer(columnGrid.getDefaultRenderer(Boolean.class));
+        
+        panel_3.setViewportView(columnGrid);
+
+        //----------------------------------------------------------
         JLabel lblNewLabel_11 = new JLabel("Table Name");
         lblNewLabel_11.setBounds(10, 10, 69, 15);
         getContentPane().add(lblNewLabel_11);

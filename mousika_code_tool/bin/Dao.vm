@@ -1,0 +1,10 @@
+package ${params.daoPack};
+
+import com.mousika.common.dao.BaseDao;
+import ${params.modelPack}.${params.modelClass};
+/**
+ * @author xiaojf 294825811@qq.com
+ */
+public interface ${params.modelClass}Dao extends BaseDao<${params.modelClass}> {
+
+}

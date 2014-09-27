@@ -1,5 +1,7 @@
 package com.mousika.tool.bean;
 
+import com.mousika.tool.util.CamelCaseUtil;
+
 public class ColumnInfo {
     private String tableCat;//表类别（可为 null
     private String tableSchem;//表模式（可为 null）
@@ -24,6 +26,13 @@ public class ColumnInfo {
     private String scopeTable;//表名称，它是引用属性的作用域（如果 DATA_TYPE 不是 REF，则为 null） 
     private short sourceDataType;//不同类型或用户生成 Ref 类型、来自 java.sql.Types 的 SQL 类型的源类型（如果 DATA_TYPE 不是 DISTINCT 或用户生成的 REF，则为 null）
     private String isAutoincrement;//示此列是否自动增加 YES --- 如果该列自动增加 /NO --- 如果该列不自动增加 /空字符串 --- 如果不能确定该列是否是自动增加参数 
+    private boolean isEnable = true;
+    
+    private String columnNameField;//字段名称的Class驼峰表示
+    private String columnNameMethodField;//字段名称的Class驼峰表示,第一个字母大写
+    private String typeNameField;//字段类型的权限定包XX.XX.XX
+    private boolean key = false;//是否为主键
+    
     public ColumnInfo() {
         super();
     }
@@ -57,6 +66,7 @@ public class ColumnInfo {
         this.sourceDataType = sourceDataType;
         this.isAutoincrement = isAutoincrement;
     }
+    
     @Override
     public String toString() {
         return "ColumnInfo [tableCat=" + tableCat + ", tableSchem=" + tableSchem + ", tableName=" + tableName
@@ -66,7 +76,8 @@ public class ColumnInfo {
                 + columnDef + ", sqlDataType=" + sqlDataType + ", sqlDatetimeSub=" + sqlDatetimeSub
                 + ", charOctetLength=" + charOctetLength + ", ordinalPosition=" + ordinalPosition + ", isNullable="
                 + isNullable + ", scopeCatlog=" + scopeCatlog + ", scopeSchema=" + scopeSchema + ", scopeTable="
-                + scopeTable + ", sourceDataType=" + sourceDataType + ", isAutoincrement=" + isAutoincrement + "]";
+                + scopeTable + ", sourceDataType=" + sourceDataType + ", isAutoincrement=" + isAutoincrement
+                + ", isEnable=" + isEnable + "]";
     }
     public String getTableCat() {
         return tableCat;
@@ -87,7 +98,7 @@ public class ColumnInfo {
         this.tableName = tableName;
     }
     public String getColumnName() {
-        return columnName;
+        return columnName.toUpperCase();
     }
     public void setColumnName(String columnName) {
         this.columnName = columnName;
@@ -206,4 +217,29 @@ public class ColumnInfo {
     public void setIsAutoincrement(String isAutoincrement) {
         this.isAutoincrement = isAutoincrement;
     }
+    public boolean isEnable() {
+        return isEnable;
+    }
+    public void setEnable(boolean isEnable) {
+        this.isEnable = isEnable;
+    }
+    public String getColumnNameField() {
+        return CamelCaseUtil.toCamelCase(columnName);
+    }
+    public String getTypeNameField() {
+        return ConstantMap.sql2JavaMap.get(typeName);
+    }
+    
+    public String getColumnNameMethodField() {
+        return CamelCaseUtil.toClassName(columnName);
+    }
+    public boolean isKey() {
+        return key;
+    }
+    public void setKey(boolean key) {
+        this.key = key;
+    }
+    
+    
+    
 }

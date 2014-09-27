@@ -1,0 +1,14 @@
+package ${params.packageName};
+
+import java.util.List;
+
+import ${params.modelPackage}.${params.modelName};
+
+/**
+ * 
+ * @author xiaojf 294825811@qq.com
+ * 
+ */
+public interface ${params.modelName}Service {
+
+}

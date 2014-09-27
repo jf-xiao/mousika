@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ConstantMap {
     public static final Map<Integer,String> sqlTypeMap = new HashMap<Integer, String>();
-    public    static final Map<String,String> sql2JavaMap = new HashMap<String, String>();
+    public static final Map<String,String> sql2JavaMap = new HashMap<String, String>();
     
     static {
         sqlTypeMap.put(2003, "ARRAY");
@@ -56,11 +56,13 @@ public class ConstantMap {
         sql2JavaMap.put("CHAR","java.lang.Character");
         sql2JavaMap.put("CLOB","java.lang.String");
         sql2JavaMap.put("DATALINK","java.net.URL");
-        sql2JavaMap.put("DATE","java.lang.Date");
+        sql2JavaMap.put("DATE","java.util.Date");
+        sql2JavaMap.put("DATETIME","java.util.Date");
         sql2JavaMap.put("DECIMAL","java.math.BigDecimal");
         sql2JavaMap.put("DISTINCT","java.lang.Object");
         sql2JavaMap.put("DOUBLE","java.lang.Double");
         sql2JavaMap.put("FLOAT","java.lang.Float");
+        sql2JavaMap.put("INT","java.lang.Integer");
         sql2JavaMap.put("INTEGER","java.lang.Integer");
         sql2JavaMap.put("JAVA_OBJECT","java.lang.Object");
         sql2JavaMap.put("LONGNVARCHAR","java.lang.String");

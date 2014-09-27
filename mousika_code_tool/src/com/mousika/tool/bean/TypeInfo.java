@@ -31,6 +31,4 @@ public class TypeInfo {
     public String toString() {
         return "Type [key=" + key + ", value=" + value + "]";
     }
-    
-    
 }

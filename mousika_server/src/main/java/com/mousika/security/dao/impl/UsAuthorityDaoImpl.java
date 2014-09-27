@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mousika.common.dao.impl.BaseDaoImpl;
 import com.mousika.security.dao.UsAuthorityDao;

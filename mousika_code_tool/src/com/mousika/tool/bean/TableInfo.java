@@ -1,5 +1,8 @@
 package com.mousika.tool.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TableInfo {
     private String tableCat;//表类别（可为 null） 
     private String tableSchem;//表模式（可为 null）
@@ -10,7 +13,11 @@ public class TableInfo {
     private String typeSchem;//类型模式（可为 null）
     private String typeName;//类型名称（可为 null）
     private String selfReferencingColName;//有类型表的指定 "identifier" 列的名称（可为 null）
-    private String refGeneration;//指定在 SELF_REFERENCING_COL_NAME 中创建值的方式。这些值为 "SYSTEM"、"USER" 和 "DERIVED"。（可能为 null） 
+    private String refGeneration;//指定在 SELF_REFERENCING_COL_NAME 中创建值的方式。这些值为 "SYSTEM"、"USER" 和 "DERIVED"。（可能为 null）
+    
+    private List<ColumnInfo> columnInfos = new ArrayList<ColumnInfo>();//表的列信息
+    private boolean isEnable = false;//是否创建
+    
     public TableInfo() {
         super();
     }
@@ -28,12 +35,14 @@ public class TableInfo {
         this.selfReferencingColName = selfReferencingColName;
         this.refGeneration = refGeneration;
     }
+    
+    
     @Override
     public String toString() {
         return "TableInfo [tableCat=" + tableCat + ", tableSchem=" + tableSchem + ", tableName=" + tableName
                 + ", tableType=" + tableType + ", remarks=" + remarks + ", typeCat=" + typeCat + ", typeSchem="
                 + typeSchem + ", typeName=" + typeName + ", selfReferencingColName=" + selfReferencingColName
-                + ", refGeneration=" + refGeneration + "]";
+                + ", refGeneration=" + refGeneration + ", columnInfos=" + columnInfos + ", isEnable=" + isEnable + "]";
     }
     public String getTableCat() {
         return tableCat;
@@ -94,6 +103,18 @@ public class TableInfo {
     }
     public void setRefGeneration(String refGeneration) {
         this.refGeneration = refGeneration;
+    }
+    public List<ColumnInfo> getColumnInfos() {
+        return columnInfos;
+    }
+    public void setColumnInfos(List<ColumnInfo> columnInfos) {
+        this.columnInfos = columnInfos;
+    }
+    public boolean isEnable() {
+        return isEnable;
+    }
+    public void setEnable(boolean isEnable) {
+        this.isEnable = isEnable;
     }
     
     
