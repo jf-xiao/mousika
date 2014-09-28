@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <config>
     <databases>
         <database key="选择"></database>
@@ -11,15 +10,15 @@
         </database>
         <database key="Oracle">
             <driverClass>oracle.jdbc.driver.OracleDriver</driverClass>
-            <url>jdbc:oracle:thin:@192.168.0.177:1521:[sid]</url>
+            <url>jdbc:oracle:thin:@localhost:1521:orcl</url>
             <username>scott</username>
             <password>tiger</password>
         </database>
         <database key="SQLServer2000">
             <driverClass>com.microsoft.jdbc.sqlserver.SQLServerDriver</driverClass>
             <url>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=[database]</url>
-            <username></username>
-            <password></password>
+            <username>scott</username>
+            <password>tiger</password>
         </database>
         <database key="SQLServer2005">
             <driverClass>com.microsoft.sqlserver.jdbc.SQLServerDriver</driverClass>

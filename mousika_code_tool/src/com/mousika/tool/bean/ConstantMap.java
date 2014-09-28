@@ -72,6 +72,7 @@ public class ConstantMap {
         sql2JavaMap.put("NCLOB","java.lang.String");
         sql2JavaMap.put("NULL","null");
         sql2JavaMap.put("NUMERIC","java.math.BigDecimal");
+        sql2JavaMap.put("NUMBER","java.lang.Double");
         sql2JavaMap.put("NVARCHAR","java.lang.String");
         sql2JavaMap.put("OTHER","java.lang.Object");
         sql2JavaMap.put("REAL","java.lang.Float");
@@ -85,5 +86,6 @@ public class ConstantMap {
         sql2JavaMap.put("TINYINT","java.lang.Bute");
         sql2JavaMap.put("VARBINARY","byte[]");
         sql2JavaMap.put("VARCHAR","java.lang.String");
+        sql2JavaMap.put("VARCHAR2","java.lang.String");
     }
 }

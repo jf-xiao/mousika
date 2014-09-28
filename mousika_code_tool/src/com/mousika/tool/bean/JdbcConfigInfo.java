@@ -5,6 +5,7 @@ public class JdbcConfigInfo {
     private String url;
     private String username;
     private String password;
+    private String type;
     
     public JdbcConfigInfo() {
         super();
@@ -19,6 +20,15 @@ public class JdbcConfigInfo {
     }
     
     
+
+    public JdbcConfigInfo(String driverClass, String url, String username, String password, String type) {
+        super();
+        this.driverClass = driverClass;
+        this.url = url;
+        this.username = username;
+        this.password = password;
+        this.type = type;
+    }
 
     @Override
     public String toString() {
@@ -49,6 +59,14 @@ public class JdbcConfigInfo {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
     
     

@@ -10,5 +10,5 @@ public class ConfigInfo {
     public static JdbcConfigInfo jdbcConfigInfo;
     public static List<TableInfo> tableInfos = new ArrayList<TableInfo>();
     public static Map<String,List<ColumnInfo>> tabAndcolMap = new HashMap<String, List<ColumnInfo>>();
-    
+    public static String outputPath = "";
 }

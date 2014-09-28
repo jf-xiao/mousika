@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -40,6 +41,8 @@ import com.mousika.tool.bean.TableInfo;
 import com.mousika.tool.bean.TemplateConfigInfo;
 import com.mousika.tool.core.Config;
 import com.mousika.tool.core.MainOperate;
+import com.mousika.tool.util.PathUtil;
+import com.mousika.tool.util.UrlUtil;
 /**
  * 主界面
  * @author xiaojf
@@ -74,6 +77,8 @@ public class MainFrame extends JFrame {
     private JCheckBox serviceImplCB;
     private JCheckBox daoCB;
     private JCheckBox daoImplCB;
+    private JTextField outputPathField;
+    private JComboBox databaseCB;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -88,33 +93,33 @@ public class MainFrame extends JFrame {
         });
     }
     
-    public void loadTableInfo(DatabaseInfo databaseInfo){
-        if(databaseInfo == null){
+    public void loadTableInfo(JdbcConfigInfo jdbcConfigInfo){
+        if(jdbcConfigInfo == null){
             JOptionPane.showMessageDialog(null, "数据库连接不能为空", "错误", JOptionPane.ERROR_MESSAGE);
             return ;
         }
         
-        if(databaseInfo.getDriverClass() == null || "".equals(databaseInfo.getDriverClass())){
+        if(jdbcConfigInfo.getDriverClass() == null || "".equals(jdbcConfigInfo.getDriverClass())){
             JOptionPane.showMessageDialog(null, "driverClass不能为空", "错误", JOptionPane.ERROR_MESSAGE);
             return ;
         }
         
-        if(databaseInfo.getUrl() == null || "".equals(databaseInfo.getUrl())){
+        if(jdbcConfigInfo.getUrl() == null || "".equals(jdbcConfigInfo.getUrl())){
             JOptionPane.showMessageDialog(null, "url不能为空", "错误", JOptionPane.ERROR_MESSAGE);
             return ;
         }
         
-        if(databaseInfo.getUsername() == null || "".equals(databaseInfo.getUsername())){
+        if(jdbcConfigInfo.getUsername() == null || "".equals(jdbcConfigInfo.getUsername())){
             JOptionPane.showMessageDialog(null, "username不能为空", "错误", JOptionPane.ERROR_MESSAGE);
             return ;
         }
         
-        if(databaseInfo.getPassword() == null || "".equals(databaseInfo.getPassword())){
+        if(jdbcConfigInfo.getPassword() == null || "".equals(jdbcConfigInfo.getPassword())){
             JOptionPane.showMessageDialog(null, "password不能为空", "错误", JOptionPane.ERROR_MESSAGE);
             return ;
         }
         
-        List<TableInfo> tableInfos =MainOperate.loadTableInfo(databaseInfo);
+        List<TableInfo> tableInfos =MainOperate.loadTableInfo(jdbcConfigInfo);
         table_tmd.setRowCount(0);
         
         int len = tableInfos.size();
@@ -162,7 +167,7 @@ public class MainFrame extends JFrame {
         lblNewLabel_1.setBounds(10, 60, 71, 15);
         panel.add(lblNewLabel_1);
         
-        JComboBox databaseCB = new JComboBox(Config.getDatabaseNames());
+        databaseCB = new JComboBox(Config.getDatabaseNames());
         databaseCB.addActionListener(new ActionListener() {
             
             @Override
@@ -216,9 +221,10 @@ public class MainFrame extends JFrame {
                 String url = urlField.getText();
                 String username = usernameField.getText();
                 String password = passwordField.getText();
+                String type = databaseCB.getSelectedItem().toString();
                 
-                DatabaseInfo databaseInfo = new DatabaseInfo("", driverClass, url, username, password);
-                loadTableInfo(databaseInfo);
+                JdbcConfigInfo jdbcConfigInfo = new JdbcConfigInfo(driverClass, url, username, password, type);
+                loadTableInfo(jdbcConfigInfo);
             }
         });
         refreshButt.setBounds(10, 153, 93, 23);
@@ -237,21 +243,55 @@ public class MainFrame extends JFrame {
                     }
                 }
                 
-                int rowCount = tableGrid.getModel().getRowCount();
-                for(int i = 0 ;i< rowCount;i++){
-                    boolean enable = Boolean.parseBoolean(tableGrid.getModel().getValueAt(i, 0)+"");
-                    if(enable){
-                        ConfigInfo.tableInfos.get(i).setEnable(true);
-                    }
-                }
-                
                 if(isSelected == false){
                     JOptionPane.showMessageDialog(null, "请至少选择一张表", "错误", JOptionPane.ERROR_MESSAGE);
                     return ;
                 }
                 
+                if("".equals(outputPathField.getText())){
+                    JOptionPane.showMessageDialog(null, "请选择输出路径", "错误", JOptionPane.ERROR_MESSAGE);
+                    return ;
+                }
+                
+                if(modelCB.isSelected() == false && actionCB.isSelected() == false && daoCB.isSelected() == false 
+                        && daoImplCB.isSelected() == false && serviceCB.isSelected() == false 
+                        && serviceImplCB.isSelected() == false ){
+                    JOptionPane.showMessageDialog(null, "请至少选择一个模块", "错误", JOptionPane.ERROR_MESSAGE);
+                    return ;
+                }
+                
                 if(moduleName.getText() == null || "".equals(moduleName.getText())){
                     JOptionPane.showMessageDialog(null, "包路径未设置", "错误", JOptionPane.ERROR_MESSAGE);
+                    return ;
+                }
+                
+                if(modelCB.isSelected() && "".equals(modelTemp.getText())){
+                    JOptionPane.showMessageDialog(null, "请选择model的模板路径", "错误", JOptionPane.ERROR_MESSAGE);
+                    return ;
+                }
+                
+                if(actionCB.isSelected() && "".equals(actionTemp.getText())){
+                    JOptionPane.showMessageDialog(null, "请选择action的模板路径", "错误", JOptionPane.ERROR_MESSAGE);
+                    return ;
+                }
+                
+                if(daoCB.isSelected() && "".equals(daoTemp.getText())){
+                    JOptionPane.showMessageDialog(null, "请选择dao的模板路径", "错误", JOptionPane.ERROR_MESSAGE);
+                    return ;
+                }
+                
+                if(daoImplCB.isSelected() && "".equals(daoImplTemp.getText())){
+                    JOptionPane.showMessageDialog(null, "请选择daoImpl的模板路径", "错误", JOptionPane.ERROR_MESSAGE);
+                    return ;
+                }
+                
+                if(serviceCB.isSelected() && "".equals(serviceTemp.getText())){
+                    JOptionPane.showMessageDialog(null, "请选择service的模板路径", "错误", JOptionPane.ERROR_MESSAGE);
+                    return ;
+                }
+                
+                if(serviceImplCB.isSelected() && "".equals(serviceImplTemp.getText())){
+                    JOptionPane.showMessageDialog(null, "请选择serviceImpl的模板路径", "错误", JOptionPane.ERROR_MESSAGE);
                     return ;
                 }
                 
@@ -267,8 +307,9 @@ public class MainFrame extends JFrame {
                 tempConfigMap.put(Constants.DAO_IMPL, new TemplateConfigInfo(daoImplPack.getText(), daoImplTemp.getText(), daoImplCB.isSelected()));
                 ConfigInfo.tempConfigMap = tempConfigMap;
                 
-                String result = MainOperate.generatorFiles();
+                ConfigInfo.outputPath = outputPathField.getText();
                 
+                String result = MainOperate.generatorFiles();
                 JOptionPane.showMessageDialog(null, result, "提示", JOptionPane.WARNING_MESSAGE);
             }
         });
@@ -384,6 +425,19 @@ public class MainFrame extends JFrame {
         daoImplPack.setColumns(10);
         
         JCheckBox allCB = new JCheckBox("");
+        allCB.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean isSelected = ((JCheckBox)e.getSource()).isSelected();
+                modelCB.setSelected(isSelected);
+                actionCB.setSelected(isSelected);
+                serviceCB.setSelected(isSelected);
+                serviceImplCB.setSelected(isSelected);
+                daoCB.setSelected(isSelected);
+                daoImplCB.setSelected(isSelected);
+            }
+        });
         allCB.setSelected(true);
         allCB.setBounds(269, 6, 30, 23);
         panel_1.add(allCB);
@@ -461,6 +515,8 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setApproveButtonText("确定");
+                fileChooser.setCurrentDirectory(new File(UrlUtil.getRootPath()));
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 fileChooser.showDialog(new JLabel(), "选择");
                 File file = fileChooser.getSelectedFile();
                 if(file != null){
@@ -478,6 +534,8 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setApproveButtonText("确定");
+                fileChooser.setCurrentDirectory(new File(UrlUtil.getRootPath()));
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 fileChooser.showDialog(new JLabel(), "选择");
                 File file = fileChooser.getSelectedFile();
                 if(file != null){
@@ -495,6 +553,8 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setApproveButtonText("确定");
+                fileChooser.setCurrentDirectory(new File(UrlUtil.getRootPath()));
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 fileChooser.showDialog(new JLabel(), "选择");
                 File file = fileChooser.getSelectedFile();
                 if(file != null){
@@ -512,6 +572,8 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setApproveButtonText("确定");
+                fileChooser.setCurrentDirectory(new File(UrlUtil.getRootPath()));
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 fileChooser.showDialog(new JLabel(), "选择");
                 File file = fileChooser.getSelectedFile();
                 if(file != null){
@@ -529,6 +591,8 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setApproveButtonText("确定");
+                fileChooser.setCurrentDirectory(new File(UrlUtil.getRootPath()));
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 fileChooser.showDialog(new JLabel(), "选择");
                 File file = fileChooser.getSelectedFile();
                 if(file != null){
@@ -547,6 +611,8 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setApproveButtonText("确定");
+                fileChooser.setCurrentDirectory(new File(UrlUtil.getRootPath()));
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 fileChooser.showDialog(new JLabel(), "选择");
                 File file = fileChooser.getSelectedFile();
                 if(file != null){
@@ -598,27 +664,32 @@ public class MainFrame extends JFrame {
             
             @Override
             public void mouseClicked(MouseEvent e) {
-                String table = tableGrid.getModel().getValueAt(tableGrid.getSelectedRow(), 1)+"";
-                //ConfigInfo.tableInfos.get(tableGrid.getSelectedRow()).setEnable(Boolean.parseBoolean(tableGrid.getModel().getValueAt(tableGrid.getSelectedRow(), 0)+""));
-                List<ColumnInfo> columnInfos = ConfigInfo.tabAndcolMap.get(table);
-                
-                column_tmd.setRowCount(0);
-                
-                int len = columnInfos.size();
-                
-                for(int i = 0 ; i <len ;i++) {
-                    Object[] obj = new Object[6];
-                    ColumnInfo columnInfo = columnInfos.get(i);
-                    obj[0] = columnInfo.isEnable();
-                    obj[1] = columnInfo.getColumnName();
-                    obj[2] = columnInfo.getTypeName();
-                    obj[3] = ConstantMap.sql2JavaMap.get(columnInfo.getTypeName());
-                    obj[4] = columnInfo.getColumnSize();
-                    obj[5] = columnInfo.getRemarks();
-                    column_tmd.addRow(obj);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
                 }
-                
-                
+                synchronized (this) {
+                    String table = tableGrid.getModel().getValueAt(tableGrid.getSelectedRow(), 1)+"";
+                    ConfigInfo.tableInfos.get(tableGrid.getSelectedRow()).setEnable(Boolean.parseBoolean(tableGrid.getModel().getValueAt(tableGrid.getSelectedRow(), 0)+""));
+                    List<ColumnInfo> columnInfos = ConfigInfo.tabAndcolMap.get(table);
+                    
+                    column_tmd.setRowCount(0);
+                    
+                    int len = columnInfos.size();
+                    
+                    for(int i = 0 ; i <len ;i++) {
+                        Object[] obj = new Object[6];
+                        ColumnInfo columnInfo = columnInfos.get(i);
+                        obj[0] = columnInfo.isEnable();
+                        obj[1] = columnInfo.getColumnName();
+                        obj[2] = columnInfo.getTypeName();
+                        obj[3] = ConstantMap.sql2JavaMap.get(columnInfo.getTypeName());
+                        obj[4] = columnInfo.getColumnSize();
+                        obj[5] = columnInfo.getRemarks();
+                        column_tmd.addRow(obj);
+                    }
+                }
             }
         });
         
@@ -676,18 +747,33 @@ public class MainFrame extends JFrame {
         panel_3.setViewportView(columnGrid);
 
         //----------------------------------------------------------
-        JLabel lblNewLabel_11 = new JLabel("Table Name");
+        JLabel lblNewLabel_11 = new JLabel("输出路径");
         lblNewLabel_11.setBounds(10, 10, 69, 15);
         getContentPane().add(lblNewLabel_11);
         
-        tableNameField = new JTextField();
-        tableNameField.setBounds(75, 7, 161, 21);
-        getContentPane().add(tableNameField);
-        tableNameField.setColumns(10);
+        outputPathField = new JTextField();
+        outputPathField.setBounds(75, 7, 161, 21);
+        getContentPane().add(outputPathField);
+        outputPathField.setColumns(10);
         
-        JButton searchButt = new JButton("Search");
-        searchButt.setBounds(240, 6, 81, 23);
-        getContentPane().add(searchButt);
+        JButton outpathButt = new JButton("Search");
+        outpathButt.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setApproveButtonText("确定");
+                fileChooser.setCurrentDirectory(new File(UrlUtil.getRootPath()));
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.showDialog(new JLabel(), "选择");
+                File file = fileChooser.getSelectedFile();
+                if(file != null){
+                    outputPathField.setText(file.getAbsolutePath());
+                }
+            }
+        });
+        outpathButt.setBounds(240, 6, 81, 23);
+        getContentPane().add(outpathButt);
         
     }
 }

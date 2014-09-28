@@ -8,20 +8,26 @@ import java.io.Writer;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
 public class VelocityUtil {
-    public static void generator(Object params,String templateName,String outputPath,String fileName){
+    public static void generator(Object params,String temp,String outputPath,String fileName){
         try {
+            String tempPath = temp.subSequence(0, temp.lastIndexOf("\\")).toString().replace('\\', '/');
+            String tempFile = temp.subSequence(temp.lastIndexOf("\\")+1,temp.length()).toString();
+            outputPath = outputPath.replace('\\', '/');
+            
             VelocityEngine ve = new VelocityEngine();
-            ve.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+            //ve.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+            ve.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, tempPath);
             ve.setProperty(VelocityEngine.INPUT_ENCODING, "utf-8");
             ve.setProperty(VelocityEngine.OUTPUT_ENCODING, "utf-8");
             ve.init();
-            Template template = ve.getTemplate(templateName);
+            Template template = ve.getTemplate(tempFile);
             VelocityContext context = new VelocityContext();
             context.put("params", params);
             File file = new File(outputPath);
@@ -62,6 +68,12 @@ public class VelocityUtil {
             e.printStackTrace();
         }*/
         
-        generator("xiaojf hello world!!", "hello.html", UrlUtil.getRootPath()+"/template","helloworld.html");
+        //generator("xiaojf hello world!!", "hello.html", UrlUtil.getRootPath()+"/template","helloworld.html");
+        String templateName ="C:\\Users\\xiaojf\\Desktop\\mousika_code_tool\\template.vm";
+        String tempPath = templateName.subSequence(0, templateName.lastIndexOf("\\")).toString().replace('\\', '/');
+        String tempFile = templateName.subSequence(templateName.lastIndexOf("\\")+1,templateName.length()).toString();
+        
+        System.out.println(tempPath);
+        System.out.println(tempFile);
     }
 }
