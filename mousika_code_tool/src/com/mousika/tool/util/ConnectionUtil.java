@@ -1,25 +1,33 @@
 package com.mousika.tool.util;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.mousika.tool.bean.DatabaseInfo;
 import com.mousika.tool.bean.JdbcConfigInfo;
 
+/**
+ * 创建数据库连接工具类
+ * @author xiaojf 294825811@qq.com
+ */
 public class ConnectionUtil {
-    private static String username = "root";
-    private static String password = "root";
-    private static String url = "jdbc:mysql://localhost:3306/mousika?useUnicode=true&amp;characterEncoding=UTF-8";
-    private static String driverClass ="com.mysql.jdbc.Driver";
+    private static String username = "";        //用户名
+    private static String password = "";        //密码
+    private static String url = "";             //连接url
+    private static String driverClass ="";      //数据库驱动类
     private ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
     private static ConnectionUtil instance= null;
     
     private ConnectionUtil(){
     }
     
+    /**
+     * 获取工具类对象
+     * @param databaseInfo  jdbc配置信息
+     * @return
+     * @author xiaojf 294825811@qq.com
+     */
     public static ConnectionUtil getInstance(DatabaseInfo databaseInfo){
         if(instance == null){
             url = databaseInfo.getUrl();
@@ -31,6 +39,12 @@ public class ConnectionUtil {
         return instance;
     }
     
+    /**
+     * 获取工具类对象
+     * @param jdbcConfigInfo jdbc配置信息
+     * @return
+     * @author xiaojf 294825811@qq.com
+     */
     public static ConnectionUtil getInstance(JdbcConfigInfo jdbcConfigInfo){
         if(instance == null){
             url = jdbcConfigInfo.getUrl();
@@ -42,6 +56,11 @@ public class ConnectionUtil {
         return instance;
     }
     
+    /**
+     * 获取工具类对象
+     * @return
+     * @author xiaojf 294825811@qq.com
+     */
     public static ConnectionUtil getInstance(){
         if(instance == null){
             instance = new ConnectionUtil();
@@ -49,6 +68,13 @@ public class ConnectionUtil {
         return instance;
     }
     
+    /**
+     * 获取连接对象
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @author xiaojf 294825811@qq.com
+     */
     public Connection getConnection() throws ClassNotFoundException, SQLException{
         if(threadLocal.get() == null){
             Class.forName(driverClass);
@@ -58,14 +84,19 @@ public class ConnectionUtil {
         return threadLocal.get();
     }
     
+    /**
+     * 释放连接资源
+     * @throws SQLException
+     * @author xiaojf<br/>
+     * 创建日期: 2014年9月29日 上午11:20:45
+     */
     public void releaseConn() throws SQLException{
         if(threadLocal.get() != null){
             threadLocal.get().close();
         }
     }
     
-
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+/*    public static void main(String[] args) throws ClassNotFoundException, SQLException {
         String catalog = null;
         String schemaPattern = null;
         String tableNamePattern = null;
@@ -79,6 +110,6 @@ public class ConnectionUtil {
             System.out.println(rs.getObject(5));
         }
         System.out.println(metaData.getDatabaseProductName());
-    }
+    }*/
 
 }

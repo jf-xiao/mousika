@@ -1,20 +1,24 @@
 package com.mousika.velocity.params;
 
+/**
+ * service params对象
+ * @author xiaojf 294825811@qq.com
+ */
 public class ServiceParams {
-    private String packageName ;
-    private String modelName;
-    private String modelPackage;
-    private String modelRemarks;
+    private String packageName  = "";       //com.mousika.user.service
+    private String modelName = "";          //如 User
+    private String modelPack = "";          //model包, 如com.mousika.user.model
+    private String modelRemarks = "";       //表注释,如User表的注释, 用户
     
     public ServiceParams() {
         super();
     }
     
-    public ServiceParams(String packageName, String modelName, String modelPackage, String modelRemarks) {
+    public ServiceParams(String packageName, String modelName, String modelPack, String modelRemarks) {
         super();
         this.packageName = packageName;
         this.modelName = modelName;
-        this.modelPackage = modelPackage;
+        this.modelPack= modelPack;
         this.modelRemarks = modelRemarks;
     }
 
@@ -30,17 +34,19 @@ public class ServiceParams {
     public void setModelName(String modelName) {
         this.modelName = modelName;
     }
-    public String getModelPackage() {
-        return modelPackage;
-    }
-    public void setModelPackage(String modelPackage) {
-        this.modelPackage = modelPackage;
-    }
     public String getModelRemarks() {
-        return modelRemarks;
+        return modelRemarks == null ? "" : modelRemarks;
     }
     public void setModelRemarks(String modelRemarks) {
         this.modelRemarks = modelRemarks;
+    }
+
+    public String getModelPack() {
+        return modelPack;
+    }
+
+    public void setModelPack(String modelPack) {
+        this.modelPack = modelPack;
     }
     
     

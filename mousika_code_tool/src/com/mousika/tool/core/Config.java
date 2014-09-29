@@ -13,9 +13,7 @@ import com.mousika.tool.util.XmlUtil;
 
 /**
  * 配置文件对象
- * 
- * @author xiaojf
- * 
+ * @author xiaojf 294825811@qq.com
  */
 public class Config {
     /**
@@ -25,7 +23,7 @@ public class Config {
     private static InputStream getConfigInputStream() {
         return ClassLoader.getSystemResourceAsStream("config.xml");
     }
-    
+
     /**
      * 获取数据库配置信息
      * @return
@@ -38,14 +36,13 @@ public class Config {
         List<DatabaseInfo> dbs = new ArrayList<DatabaseInfo>();
 
         for (Element element : dbEls) {
-            DatabaseInfo db = new DatabaseInfo(element.getAttribute("key"), XmlUtil.getElementValue(element, "driverClass"),
-                    XmlUtil.getElementValue(element, "url"), XmlUtil.getElementValue(element, "username"),
-                    XmlUtil.getElementValue(element, "password"));
+            DatabaseInfo db = new DatabaseInfo(element.getAttribute("key"), XmlUtil.getElementValue(element, "driverClass"), XmlUtil.getElementValue(element, "url"), XmlUtil.getElementValue(element,
+                    "username"), XmlUtil.getElementValue(element, "password"));
             dbs.add(db);
         }
         return dbs;
     }
-    
+
     /**
      * 获取数据库配置名称
      * @return
@@ -62,61 +59,58 @@ public class Config {
         }
         return dbs;
     }
-    
+
     /**
      * 根据数据库配置名称获取数据库配置信息
      * @param databaseName
      * @return
      */
-    public static DatabaseInfo getDatabase(String databaseName){
+    public static DatabaseInfo getDatabase(String databaseName) {
         Element configRoot = XmlUtil.getRootElementFromStream(getConfigInputStream());
         Element dbRoot = XmlUtil.getChildElement(configRoot, "databases");
         List<Element> dbEls = XmlUtil.getElements(dbRoot, "database");
-        
+
         for (Element element : dbEls) {
             String key = element.getAttribute("key");
-            if(databaseName.equals(key)){
-                return new DatabaseInfo(key, XmlUtil.getElementValue(element, "driverClass"),
-                        XmlUtil.getElementValue(element, "url"), XmlUtil.getElementValue(element, "username"),
+            if (databaseName.equals(key)) {
+                return new DatabaseInfo(key, XmlUtil.getElementValue(element, "driverClass"), XmlUtil.getElementValue(element, "url"), XmlUtil.getElementValue(element, "username"),
                         XmlUtil.getElementValue(element, "password"));
             }
         }
-        
         return null;
     }
-    
+
     /**
      * 获取类型配置信息
      * @return
      */
-    public static List<TypeInfo> getTypes(){
+    public static List<TypeInfo> getTypes() {
         Element configRoot = XmlUtil.getRootElementFromStream(getConfigInputStream());
         Element typesRoot = XmlUtil.getChildElement(configRoot, "types");
         List<Element> typeEls = XmlUtil.getElements(typesRoot, "type");
         List<TypeInfo> types = new ArrayList<TypeInfo>();
-        
+
         for (Element element : typeEls) {
             types.add(new TypeInfo(element.getAttribute("key"), element.getTextContent()));
         }
         return types;
     }
-    
+
     /**
      * 根据类型名称获取类型配置信息
      * @return
      */
-    public static TypeInfo getType(String typeName){
+    public static TypeInfo getType(String typeName) {
         Element configRoot = XmlUtil.getRootElementFromStream(getConfigInputStream());
         Element typesRoot = XmlUtil.getChildElement(configRoot, "types");
         List<Element> typeEls = XmlUtil.getElements(typesRoot, "type");
-        
+
         for (Element element : typeEls) {
             String key = element.getAttribute("key");
-            if(key.equals(typeName)){
+            if (key.equals(typeName)) {
                 return new TypeInfo(key, element.getTextContent());
             }
         }
-        
         return null;
     }
 }

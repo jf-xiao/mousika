@@ -2,10 +2,13 @@ package com.mousika.tool.bean;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * 类型映射
+ * @author xiaojf 294825811@qq.com
+ */
 public class ConstantMap {
-    public static final Map<Integer,String> sqlTypeMap = new HashMap<Integer, String>();
-    public static final Map<String,String> sql2JavaMap = new HashMap<String, String>();
+    public static final Map<Integer,String> sqlTypeMap = new HashMap<Integer, String>();    //sql类型
+    public static final Map<String,String> sql2JavaMap = new HashMap<String, String>();     //sql类型与java类型对应关系
     
     static {
         sqlTypeMap.put(2003, "ARRAY");
@@ -45,8 +48,7 @@ public class ConstantMap {
         sqlTypeMap.put(-3, "VARBINARY");
         sqlTypeMap.put(12, "VARCHAR");
         
-        //---------------------------------------
-        
+        //sql类型与java类型映射
         sql2JavaMap.put("ARRAY","java.lang.reflect.Array");
         sql2JavaMap.put("BIGINT","java.lang.Long");
         sql2JavaMap.put("BINARY","byte[]");

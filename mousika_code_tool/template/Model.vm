@@ -13,6 +13,7 @@ import javax.persistence.Version;
 
 import org.hibernate.annotations.GenericGenerator;
 /**
+ * ${params.modelRemarks}
  * @author xiaojf 294825811@qq.com
  */
 @Entity

@@ -1,15 +1,19 @@
 package com.mousika.velocity.params;
 
+/**
+ * dao impl params对象
+ * @author xiaojf 294825811@qq.com
+ */
 public class DaoImplParams {
 
-    private String servicePack;
-    private String modelClass;
-    private String daoPack;
-    private String modelPack;
-    private String serviceImplPack;
-    private String modelField;
-    private String daoImplPack;
-    
+    private String servicePack = "";        //service 包,如com.mousika.user.service
+    private String modelClass = "";         //model 类名,如User
+    private String daoPack = "";            //dao包, 如com.mousika.user.dao
+    private String modelPack = "";          //model包, 如com.mousika.user.model
+    private String serviceImplPack = "";    //serviceImpl包, 如com.mousika.user.service.impl
+    private String modelField = "";         //如 usUser
+    private String daoImplPack = "";        //daoImpl包, 如com.mousika.user.dao.impl
+    private String modelRemarks = "";       //表注释,如User表的注释, 用户
     public DaoImplParams() {
         super();
     }
@@ -32,8 +36,37 @@ public class DaoImplParams {
 
 
 
+    public DaoImplParams(String servicePack, String modelClass, String daoPack, String modelPack, String serviceImplPack, String modelField, String daoImplPack, String modelRemarks) {
+        super();
+        this.servicePack = servicePack;
+        this.modelClass = modelClass;
+        this.daoPack = daoPack;
+        this.modelPack = modelPack;
+        this.serviceImplPack = serviceImplPack;
+        this.modelField = modelField;
+        this.daoImplPack = daoImplPack;
+        this.modelRemarks = modelRemarks;
+    }
+
+
+
+
+    public String getModelRemarks() {
+        return modelRemarks == null ? "" : modelRemarks;
+    }
+
+
+
+
+    public void setModelRemarks(String modelRemarks) {
+        this.modelRemarks = modelRemarks;
+    }
+
+
+
+
     public String getDaoImplPack() {
-        return daoImplPack;
+        return daoImplPack == null ? "" : daoImplPack;
     }
 
 
@@ -47,7 +80,7 @@ public class DaoImplParams {
 
 
     public String getServicePack() {
-        return servicePack;
+        return servicePack == null ? "" : servicePack;
     }
 
 
@@ -57,7 +90,7 @@ public class DaoImplParams {
 
 
     public String getModelClass() {
-        return modelClass;
+        return modelClass == null ? "" : modelClass;
     }
 
 
@@ -67,7 +100,7 @@ public class DaoImplParams {
 
 
     public String getDaoPack() {
-        return daoPack;
+        return daoPack == null ? "" : daoPack;
     }
 
 
@@ -77,7 +110,7 @@ public class DaoImplParams {
 
 
     public String getModelPack() {
-        return modelPack;
+        return modelPack == null ? "" : modelPack;
     }
 
 
@@ -87,7 +120,7 @@ public class DaoImplParams {
 
 
     public String getServiceImplPack() {
-        return serviceImplPack;
+        return serviceImplPack == null ? "" : serviceImplPack;
     }
 
 
@@ -98,7 +131,7 @@ public class DaoImplParams {
 
 
     public String getModelField() {
-        return modelField;
+        return modelField == null ? "" : modelField;
     }
 
 

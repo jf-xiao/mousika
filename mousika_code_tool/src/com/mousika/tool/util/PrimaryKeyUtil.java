@@ -9,9 +9,18 @@ import java.util.List;
 import com.mousika.tool.bean.JdbcConfigInfo;
 import com.mousika.tool.bean.PrimaryKeyInfo;
 
-
+/**
+ * 主键工具类
+ * @author xiaojf 294825811@qq.com
+ */
 public class PrimaryKeyUtil {
-    
+    /**
+     * 获取某张表的主键集合
+     * @param jdbcConfigInfo    jdbc配置信息
+     * @param tableName         表名
+     * @return
+     * @author xiaojf 294825811@qq.com
+     */
     public static List<PrimaryKeyInfo> getTablePks(JdbcConfigInfo jdbcConfigInfo , String tableName){
         List<PrimaryKeyInfo> primaryKeyInfos = new ArrayList<PrimaryKeyInfo>();
         try {
@@ -35,7 +44,7 @@ public class PrimaryKeyUtil {
         return primaryKeyInfos;
     }
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         try {
             Connection conn = ConnectionUtil.getInstance().getConnection();
             DatabaseMetaData dbMeta = conn.getMetaData();
@@ -51,5 +60,5 @@ public class PrimaryKeyUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }
