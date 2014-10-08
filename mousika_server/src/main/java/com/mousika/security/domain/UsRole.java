@@ -12,8 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 /**
  * 角色
- * @author xiaojf
- *
+ * @author xiaojf 294825811@qq.com
  */
 @Entity
 @Table(name = "us_role", catalog = "mousika")

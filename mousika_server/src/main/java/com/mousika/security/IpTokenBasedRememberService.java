@@ -13,9 +13,7 @@ import org.springframework.util.DigestUtils;
 
 /**
  * 增加IP访问安全的Remember me功能
- * 
- * @author xiaojf
- * 
+ * @author xiaojf 294825811@qq.com
  */
 public class IpTokenBasedRememberService extends TokenBasedRememberMeServices {
 

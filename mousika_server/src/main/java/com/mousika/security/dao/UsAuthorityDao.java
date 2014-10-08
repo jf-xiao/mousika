@@ -6,8 +6,7 @@ import com.mousika.common.dao.BaseDao;
 import com.mousika.security.domain.UsAuthority;
 /**
  * 权限DAO
- * @author xiaojf
- *
+ * @author xiaojf 294825811@qq.com
  */
 public interface UsAuthorityDao extends BaseDao<UsAuthority> {
     /**

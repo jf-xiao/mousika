@@ -14,9 +14,7 @@ import com.mousika.security.service.UsAuthorityService;
 
 /**
  * 权限SERVICE实现类
- * 
- * @author xiaojf
- * 
+ * @author xiaojf 294825811@qq.com
  */
 @Transactional
 @Service(value="usAuthorityService")

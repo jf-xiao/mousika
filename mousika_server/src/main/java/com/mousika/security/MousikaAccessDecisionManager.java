@@ -11,9 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 /**
  * 访问决策器
- * 
- * @author xiaojf
- * 
+ * @author xiaojf 294825811@qq.com
  */
 public class MousikaAccessDecisionManager implements AccessDecisionManager {
 

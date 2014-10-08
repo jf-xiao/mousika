@@ -1,4 +1,4 @@
-package com.mousika.security.util;
+package com.mousika.test;
 
 import com.mousika.security.MousikaPasswordEncoder;
 

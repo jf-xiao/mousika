@@ -4,8 +4,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * 修改密码接口
- * @author xiaojf
- *
+ * @author xiaojf 294825811@qq.com
  */
 public interface IChangePassword extends UserDetailsService {
     /**

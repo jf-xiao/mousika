@@ -6,9 +6,7 @@ import com.mousika.security.domain.UsRole;
 
 /**
  * 角色SERVICE
- * 
- * @author xiaojf
- * 
+ * @author xiaojf 294825811@qq.com
  */
 public interface UsRoleService {
     /**

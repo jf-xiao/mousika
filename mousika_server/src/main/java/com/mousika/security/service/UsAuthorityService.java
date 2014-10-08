@@ -6,9 +6,7 @@ import com.mousika.security.domain.UsAuthority;
 
 /**
  * 权限SERVICE
- * 
- * @author xiaojf
- * 
+ * @author xiaojf 294825811@qq.com
  */
 public interface UsAuthorityService {
     /**

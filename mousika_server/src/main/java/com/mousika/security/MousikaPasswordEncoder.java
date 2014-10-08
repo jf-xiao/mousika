@@ -5,8 +5,7 @@ import org.springframework.security.authentication.encoding.PasswordEncoder;
 
 /**
  * 自定义密码加密方式
- * @author xiaojf
- *
+ * @author xiaojf 294825811@qq.com
  */
 public class MousikaPasswordEncoder implements PasswordEncoder {
 

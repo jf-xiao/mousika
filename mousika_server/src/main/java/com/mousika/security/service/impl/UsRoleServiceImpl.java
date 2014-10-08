@@ -16,9 +16,7 @@ import com.mousika.security.service.UsRoleService;
 
 /**
  * 角色SERVICE实现类
- * 
- * @author xiaojf
- * 
+ * @author xiaojf 294825811@qq.com
  */
 @Transactional
 @Service(value = "usRoleService")

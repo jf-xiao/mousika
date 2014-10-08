@@ -10,8 +10,7 @@ import com.mousika.security.dao.UsAuthorityDao;
 import com.mousika.security.domain.UsAuthority;
 /**
  * 权限DAO实现类
- * @author xiaojf
- *
+ * @author xiaojf 294825811@qq.com
  */
 @Repository(value="usAuthorityDao")
 public class UsAuthorityDaoImpl extends BaseDaoImpl<UsAuthority> implements UsAuthorityDao {

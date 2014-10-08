@@ -12,12 +12,14 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 
+import com.mousika.common.util.JdbcUtil;
 import com.mousika.security.domain.UsAuthority;
 import com.mousika.security.domain.UsRole;
-import com.mousika.security.util.SecurityJdbcUtil;
 
-public class MousikaSecurityMetadataSource implements
-        FilterInvocationSecurityMetadataSource {
+/**
+ * @author xiaojf 294825811@qq.com
+ */
+public class MousikaSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
     private static Map<String, Collection<ConfigAttribute>> resourceMap = null;// 资源和权限的关系
 
@@ -50,14 +52,14 @@ public class MousikaSecurityMetadataSource implements
      */
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
-        //获取当前访问的地址
+        // 获取当前访问的地址
         String requestUrl = ((FilterInvocation) object).getRequestUrl();
         System.out.println("requestUrl is " + requestUrl);
-        //加载系统权限资源
+        // 加载系统权限资源
         if (resourceMap == null) {
             loadResourceDefine();
         }
-        //返回获取当前访问资源所需要的权限
+        // 返回获取当前访问资源所需要的权限
         return resourceMap.get(requestUrl);
     }
 
@@ -81,20 +83,20 @@ public class MousikaSecurityMetadataSource implements
         ResultSet rs = null;
         List<UsAuthority> authorities = new ArrayList<UsAuthority>();
 
-        SecurityJdbcUtil sql = new SecurityJdbcUtil();
-        //获取所有可用的权限规则
+        JdbcUtil sql = new JdbcUtil();
+        // 获取所有可用的权限规则
         rs = sql.executeQuery("SELECT * FROM US_AUTHORITY WHERE enable = '1' ");
         try {
             while (rs.next()) {
-                //权限ID
+                // 权限ID
                 String authId = rs.getString("AUTH_ID");
-                //权限名称
+                // 权限名称
                 String name = rs.getString("NAME");
-                //是否可用
-                String enable = rs.getBoolean("ENABLE")+"";
-                //权限url
+                // 是否可用
+                String enable = rs.getBoolean("ENABLE") + "";
+                // 权限url
                 String url = rs.getString("URL");
-                UsAuthority authority = new UsAuthority(authId, name, enable,url);
+                UsAuthority authority = new UsAuthority(authId, name, enable, url);
                 authorities.add(authority);
             }
             rs.close();
@@ -115,18 +117,18 @@ public class MousikaSecurityMetadataSource implements
     private List<UsRole> loadRoldWithAuthId(String authId) {
         List<UsRole> roles = new ArrayList<UsRole>();
         ResultSet rs = null;
-        SecurityJdbcUtil sql = new SecurityJdbcUtil();
-        //获取当前访问用户具有的可用角色
+        JdbcUtil sql = new JdbcUtil();
+        // 获取当前访问用户具有的可用角色
         rs = sql.executeQuery("SELECT r.role_id,r.name,r.enable FROM us_role r,us_authority a,us_role_auth l WHERE r.role_id = l.role_id AND a.auth_id = l.auth_id AND a.auth_id = '"
                 + authId + "'");
         try {
             while (rs.next()) {
-                //角色ID
+                // 角色ID
                 String roleId = rs.getString("role_id");
-                //角色名称
+                // 角色名称
                 String name = rs.getString("name");
-                //是否可用
-                String enable = rs.getBoolean("enable")+"";
+                // 是否可用
+                String enable = rs.getBoolean("enable") + "";
                 UsRole role = new UsRole(roleId, name, enable);
                 roles.add(role);
             }

@@ -20,9 +20,7 @@ import com.mousika.common.util.EmptyUtil;
 
 /**
  * 公共数据访问接口实现
- * 
- * @author xiaojf
- * 
+ * @author xiaojf 294825811@qq.com
  * @param <T>
  */
 public class BaseDaoImpl<T> implements BaseDao<T> {

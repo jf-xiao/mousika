@@ -17,9 +17,7 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 
 /**
  * 自定义安全过滤器
- * 
- * @author xiaojf
- * 
+ * @author xiaojf 294825811@qq.com
  */
 public class MousikaSecurityFilter extends AbstractSecurityInterceptor
         implements Filter {

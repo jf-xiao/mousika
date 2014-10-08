@@ -11,10 +11,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.mousika.common.util.JdbcUtil;
 import com.mousika.security.domain.UsRole;
 import com.mousika.security.domain.UsUser;
-import com.mousika.security.util.SecurityJdbcUtil;
-
+/**
+ * @author xiaojf 294825811@qq.com
+ */
 public class MousikaUserDetailsService implements UserDetailsService {
     
     /**
@@ -48,7 +50,7 @@ public class MousikaUserDetailsService implements UserDetailsService {
     private List<UsRole> loadRoleWithUsername(String username) {
         List<UsRole> roles = new ArrayList<UsRole>();
         ResultSet rs = null;
-        SecurityJdbcUtil sql = new SecurityJdbcUtil();
+        JdbcUtil sql = new JdbcUtil();
         //获取当前用户可用的角色
         rs = sql.executeQuery("SELECT * FROM us_role r,us_user u , us_user_role l WHERE r.role_id = l.role_id AND r.enable != '0' AND r.enable != FALSE AND r.enable IS NOT NULL AND u.user_id = l.user_id AND u.username = '"
                 + username + "'");
@@ -77,7 +79,7 @@ public class MousikaUserDetailsService implements UserDetailsService {
     private UsUser loadUserInfo(String username) {
         ResultSet rs = null;
         UsUser user = null;
-        SecurityJdbcUtil sql = new SecurityJdbcUtil();
+        JdbcUtil sql = new JdbcUtil();
         //获取当前登录用户的基本信息
         rs = sql.executeQuery("select t.* from US_USER t WHERE t.enable != '0' AND t.enable != FALSE AND t.enable IS NOT NULL AND t.username = '"
                 + username + "'");

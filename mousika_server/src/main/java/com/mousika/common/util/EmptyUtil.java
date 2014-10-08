@@ -1,7 +1,10 @@
 package com.mousika.common.util;
 
 import java.util.Collection;
-
+/**
+ * 是否Null判断
+ * @author xiaojf 294825811@qq.com
+ */
 public class EmptyUtil {
     /**
      * 为空判断

@@ -5,8 +5,7 @@ import org.springframework.security.core.userdetails.memory.InMemoryDaoImpl;
 
 /**
  * 基于内存的密码修改
- * @author xiaojf
- *
+ * @author xiaojf 294825811@qq.com
  */
 public class InMemoryChangePassword extends InMemoryDaoImpl implements IChangePassword {
 

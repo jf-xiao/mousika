@@ -10,8 +10,7 @@ import com.mousika.security.dao.UsRoleAuthDao;
 import com.mousika.security.domain.UsRoleAuth;
 /**
  * 角色-权限 DAO实现类
- * @author xiaojf
- *
+ * @author xiaojf 294825811@qq.com
  */
 @Repository(value="usRoleAuthDao")
 public class UsRoleAuthDaoImpl extends BaseDaoImpl<UsRoleAuth> implements UsRoleAuthDao {

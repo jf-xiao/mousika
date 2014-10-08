@@ -17,8 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 /**
  * 用户
- * @author xiaojf
- *
+ * @author xiaojf 294825811@qq.com
  */
 @Entity
 @Table(name = "us_user", catalog = "mousika")
