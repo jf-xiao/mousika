@@ -3,6 +3,8 @@ package com.mousika.tool.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTextArea;
+
 import com.mousika.tool.bean.ColumnInfo;
 import com.mousika.tool.bean.ConfigInfo;
 import com.mousika.tool.bean.Constants;
@@ -13,6 +15,7 @@ import com.mousika.tool.util.CamelCaseUtil;
 import com.mousika.tool.util.PathUtil;
 import com.mousika.tool.util.PrimaryKeyUtil;
 import com.mousika.tool.util.CodeToolGenerator;
+import com.mousika.tool.view.ContentView;
 import com.mousika.velocity.params.ActionParams;
 import com.mousika.velocity.params.DaoImplParams;
 import com.mousika.velocity.params.DaoParams;
@@ -38,8 +41,14 @@ public class Generator {
         String outputPath = ConfigInfo.outputPath + "/" + PathUtil.pack2Path(packageName);
         String modelRemarks = tableInfo.getRemarks();
         ServiceParams params = new ServiceParams(packageName, modelName, modelPack, modelRemarks);
-
-        CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.SERVICE).getTemplatePath(), outputPath, modelName + "Service.java");
+        
+        if(ConfigInfo.onlyStreamOut){
+            String fileStream = CodeToolGenerator.generatorStream(params, ConfigInfo.tempConfigMap.get(Constants.SERVICE).getTemplatePath());
+            String title = PathUtil.pack2Path(packageName)+"/"+modelName + "Service.java";
+            new ContentView().showView(title,fileStream);
+        }else {
+            CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.SERVICE).getTemplatePath(), outputPath, modelName + "Service.java");
+        }
     }
 
     /**
@@ -58,7 +67,13 @@ public class Generator {
 
         String outputPath = ConfigInfo.outputPath + "/" + PathUtil.pack2Path(actionPack);
 
-        CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.ACTION).getTemplatePath(), outputPath, modelClass + "Controller.java");
+        if(ConfigInfo.onlyStreamOut){
+            String fileStream = CodeToolGenerator.generatorStream(params, ConfigInfo.tempConfigMap.get(Constants.ACTION).getTemplatePath());
+            String title = PathUtil.pack2Path(actionPack)+"/"+modelClass + "Controller.java";
+            new ContentView().showView(title,fileStream);
+        }else{
+            CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.ACTION).getTemplatePath(), outputPath, modelClass + "Controller.java");
+        }
     }
 
     /**
@@ -95,8 +110,15 @@ public class Generator {
         ModelParams params = new ModelParams(modelPack, modelClass, modelField, tableName, modelRemarks, keys, columnInfos);
 
         String outputPath = ConfigInfo.outputPath + "/" + PathUtil.pack2Path(modelPack);
+        
+        if(ConfigInfo.onlyStreamOut){
+            String fileStream = CodeToolGenerator.generatorStream(params, ConfigInfo.tempConfigMap.get(Constants.MODEL).getTemplatePath());
+            String title = PathUtil.pack2Path(modelPack)+"/"+modelClass + ".java";
+            new ContentView().showView(title,fileStream);
+        }else{
+            CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.MODEL).getTemplatePath(), outputPath, modelClass + ".java");
+        }
 
-        CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.MODEL).getTemplatePath(), outputPath, modelClass + ".java");
     }
 
     /**
@@ -117,7 +139,13 @@ public class Generator {
 
         String outputPath = ConfigInfo.outputPath + "/" + PathUtil.pack2Path(serviceImplPack);
 
-        CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.SERVICE_IMPL).getTemplatePath(), outputPath, modelClass + "Service.java");
+        if(ConfigInfo.onlyStreamOut){
+            String fileStream = CodeToolGenerator.generatorStream(params, ConfigInfo.tempConfigMap.get(Constants.SERVICE_IMPL).getTemplatePath());
+            String title = PathUtil.pack2Path(serviceImplPack)+"/"+modelClass + "Service.java";
+            new ContentView().showView(title,fileStream);
+        }else {
+            CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.SERVICE_IMPL).getTemplatePath(), outputPath, modelClass + "Service.java");
+        }
     }
 
     /**
@@ -138,7 +166,13 @@ public class Generator {
 
         String outputPath = ConfigInfo.outputPath + "/" + PathUtil.pack2Path(daoPack);
 
-        CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.DAO).getTemplatePath(), outputPath, modelClass + "Dao.java");
+        if(ConfigInfo.onlyStreamOut){
+            String fileStream = CodeToolGenerator.generatorStream(params, ConfigInfo.tempConfigMap.get(Constants.DAO).getTemplatePath());
+            String title = PathUtil.pack2Path(daoPack)+"/"+modelClass + "Dao.java";
+            new ContentView().showView(title,fileStream);
+        } else{
+            CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.DAO).getTemplatePath(), outputPath, modelClass + "Dao.java");
+        }
 
     }
 
@@ -161,7 +195,13 @@ public class Generator {
 
         String outputPath = ConfigInfo.outputPath + "/" + PathUtil.pack2Path(daoImplPack);
 
-        CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.DAO_IMPL).getTemplatePath(), outputPath, modelClass + "DaoImpl.java");
+        if(ConfigInfo.onlyStreamOut){
+            String fileStream = CodeToolGenerator.generatorStream(params, ConfigInfo.tempConfigMap.get(Constants.DAO_IMPL).getTemplatePath());
+            String title = PathUtil.pack2Path(daoImplPack)+"/"+modelClass + "DaoImpl.java";
+            new ContentView().showView(title,fileStream);
+        } else{
+            CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.DAO_IMPL).getTemplatePath(), outputPath, modelClass + "DaoImpl.java");
+        }
 
     }
 

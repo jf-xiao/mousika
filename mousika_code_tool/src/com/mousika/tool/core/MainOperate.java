@@ -21,6 +21,7 @@ public class MainOperate {
      * @author xiaojf 294825811@qq.com
      */
     public static String generatorFiles() {
+
         Map<Constants, TemplateConfigInfo> tempConfigMap = ConfigInfo.tempConfigMap;
 
         for (TableInfo tableInfo : ConfigInfo.tableInfos) {
@@ -28,28 +29,31 @@ public class MainOperate {
                 //生产ACTION
                 if (tempConfigMap.get(Constants.ACTION).isEnable()) {
                     Generator.generatorAction(tableInfo);
-
                 }
+                
                 //生产MODEL
                 if (tempConfigMap.get(Constants.MODEL).isEnable()) {
 
                     Generator.generatorModel(tableInfo);
                 }
+                
                 //生产DAO_IMPL
                 if (tempConfigMap.get(Constants.DAO_IMPL).isEnable()) {
 
                     Generator.generatorDaoImpl(tableInfo);
                 }
+                
                 //生产DAO
                 if (tempConfigMap.get(Constants.DAO).isEnable()) {
                     Generator.generatorDao(tableInfo);
 
                 }
+                
                 //生产SERVICE_IMPL
                 if (tempConfigMap.get(Constants.SERVICE_IMPL).isEnable()) {
                     Generator.generatorServiceImpl(tableInfo);
-
                 }
+                
                 //生产SERVICE_IMPL
                 if (tempConfigMap.get(Constants.SERVICE).isEnable()) {
                     Generator.generatorService(tableInfo);
@@ -70,9 +74,9 @@ public class MainOperate {
         List<TableInfo> tableInfos = new ArrayList<TableInfo>();
         
         if("ORACLE".equals(jdbcConfigInfo.getType().toUpperCase())){        //ORACLE数据库
-            tableInfos = OracleOperator.loadTableInfo(jdbcConfigInfo);
+            tableInfos = new OracleOperator().loadTableInfo(jdbcConfigInfo);
         }else if("MYSQL".equals(jdbcConfigInfo.getType().toUpperCase())){   //MYSQL数据库
-            tableInfos = MySqlOperator.loadTableInfo(jdbcConfigInfo);
+            tableInfos = new MySqlOperator().loadTableInfo(jdbcConfigInfo);
         }
         return tableInfos;
     }

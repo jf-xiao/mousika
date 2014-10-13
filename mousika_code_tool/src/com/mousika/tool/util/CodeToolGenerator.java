@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 
 import org.apache.velocity.Template;
@@ -64,11 +65,52 @@ public class CodeToolGenerator {
             e.printStackTrace();
         } catch (MethodInvocationException e) {
             e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } 
+    }
+    
+    /**
+     * code tool 文件生成器
+     * @param params
+     * @param temp
+     * @param outputPath
+     * @param fileName
+     * @author xiaojf 294825811@qq.com
+     */
+    public static String generatorStream(Object params,String temp){
+        try {
+            //转换模板路径字符串 / - > \
+            String tempPath = temp.subSequence(0, temp.lastIndexOf("\\")).toString().replace('\\', '/');
+            //截取模板名
+            String tempFile = temp.subSequence(temp.lastIndexOf("\\")+1,temp.length()).toString();
+            
+            VelocityEngine ve = new VelocityEngine();
+            //ve.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+            //设置模板路径
+            ve.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, tempPath);
+            //模板读取编码格式
+            ve.setProperty(VelocityEngine.INPUT_ENCODING, "utf-8");
+            //文件输出编码格式
+            ve.setProperty(VelocityEngine.OUTPUT_ENCODING, "utf-8");
+            //初始化velocity
+            ve.init();
+            //获取模板
+            Template template = ve.getTemplate(tempFile);
+            VelocityContext context = new VelocityContext();
+            //设置上下文参数值
+            context.put("params", params);
+            StringWriter writer = new StringWriter();
+            template.merge(context, writer);
+            return writer.toString();
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+        } catch (ParseErrorException e) {
+            e.printStackTrace();
+        } catch (MethodInvocationException e) {
+            e.printStackTrace();
+        } 
+        return null;
     }
     
 /*    public static void main(String[] args) {

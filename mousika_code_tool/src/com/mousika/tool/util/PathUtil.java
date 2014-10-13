@@ -12,7 +12,6 @@ public class PathUtil {
      * @author xiaojf 294825811@qq.com
      */
     public static String pack2Path(String pack){
-        System.out.println(pack);
         String path = pack.replace(".", "/");
         return path;
     }

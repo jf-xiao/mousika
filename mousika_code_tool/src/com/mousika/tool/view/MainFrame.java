@@ -78,6 +78,7 @@ public class MainFrame extends JFrame {
     private JCheckBox daoImplCB;
     private JTextField outputPathField;
     private JComboBox databaseCB;
+    private JCheckBox onlyStreamOutCB;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -234,20 +235,25 @@ public class MainFrame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean isSelected = false;
+                int selectedCount = 0;
                 for (TableInfo info : ConfigInfo.tableInfos) {
                     if (info.isEnable() == true) {
-                        isSelected = true;
-                        break;
+                        selectedCount++;
                     }
                 }
 
-                if (isSelected == false) {
+                if (selectedCount <= 0) {
                     JOptionPane.showMessageDialog(null, "请至少选择一张表", "错误", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                
+                if (selectedCount != 1 && onlyStreamOutCB.isSelected() == true) {
+                    JOptionPane.showMessageDialog(null, "只输出文件流前提下,一次只能操作一张表", "错误", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
-                if ("".equals(outputPathField.getText())) {
+                //当前不直接输出文件流,且输出路径未设置
+                if ("".equals(outputPathField.getText()) && onlyStreamOutCB.isSelected() == false) {
                     JOptionPane.showMessageDialog(null, "请选择输出路径", "错误", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -292,10 +298,15 @@ public class MainFrame extends JFrame {
                     JOptionPane.showMessageDialog(null, "请选择serviceImpl的模板路径", "错误", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
+                
+                ConfigInfo.onlyStreamOut = onlyStreamOutCB.isSelected();
+                
+                //数据库连接配置信息
                 JdbcConfigInfo jdbcConfigInfo = new JdbcConfigInfo(driverField.getText(), urlField.getText(), usernameField.getText(), passwordField.getText());
+                //更新缓存数据库连接配置信息
                 ConfigInfo.jdbcConfigInfo = jdbcConfigInfo;
 
+                //文件模板配置信息收集
                 Map<Constants, TemplateConfigInfo> tempConfigMap = new HashMap<Constants, TemplateConfigInfo>();
                 tempConfigMap.put(Constants.MODEL, new TemplateConfigInfo(modelPack.getText(), modelTemp.getText(), modelCB.isSelected()));
                 tempConfigMap.put(Constants.ACTION, new TemplateConfigInfo(actionPack.getText(), actionTemp.getText(), actionCB.isSelected()));
@@ -305,8 +316,10 @@ public class MainFrame extends JFrame {
                 tempConfigMap.put(Constants.DAO_IMPL, new TemplateConfigInfo(daoImplPack.getText(), daoImplTemp.getText(), daoImplCB.isSelected()));
                 ConfigInfo.tempConfigMap = tempConfigMap;
 
+                //输出根路径
                 ConfigInfo.outputPath = outputPathField.getText();
 
+                //操作结果
                 String result = MainOperate.generatorFiles();
                 JOptionPane.showMessageDialog(null, result, "提示", JOptionPane.WARNING_MESSAGE);
             }
@@ -772,6 +785,10 @@ public class MainFrame extends JFrame {
         });
         outpathButt.setBounds(240, 6, 81, 23);
         getContentPane().add(outpathButt);
+        
+        onlyStreamOutCB = new JCheckBox("直接输出");
+        onlyStreamOutCB.setBounds(331, 6, 103, 23);
+        getContentPane().add(onlyStreamOutCB);
 
     }
 }

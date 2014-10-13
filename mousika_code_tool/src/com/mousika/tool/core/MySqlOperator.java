@@ -13,13 +13,14 @@ import com.mousika.tool.bean.ColumnInfo;
 import com.mousika.tool.bean.ConfigInfo;
 import com.mousika.tool.bean.JdbcConfigInfo;
 import com.mousika.tool.bean.TableInfo;
+import com.mousika.tool.core.inter.Operator;
 import com.mousika.tool.util.ConnectionUtil;
 
 /**
  * MYSQL操作
  * @author xiaojf 294825811@qq.com
  */
-public class MySqlOperator {
+public class MySqlOperator implements Operator {
     
     /**
      * 加载表信息
@@ -27,7 +28,7 @@ public class MySqlOperator {
      * @return 所有的表信息
      * @author xiaojf 294825811@qq.com
      */
-    public static List<TableInfo> loadTableInfo(JdbcConfigInfo jdbcConfigInfo) {
+    public List<TableInfo> loadTableInfo(JdbcConfigInfo jdbcConfigInfo) {
         List<TableInfo> tableInfos = new ArrayList<TableInfo>();                //表集合
         Map<String, List<ColumnInfo>> tabAndcolMap = new HashMap<String, List<ColumnInfo>>();   //表与字段的映射关系
         try {

@@ -14,4 +14,6 @@ public class ConfigInfo {
     public static List<TableInfo> tableInfos = new ArrayList<TableInfo>();                                          //需要生产的表
     public static Map<String,List<ColumnInfo>> tabAndcolMap = new HashMap<String, List<ColumnInfo>>();              //表与字段的映射
     public static String outputPath = "";                                                                           //文件输出路径
+    public static boolean onlyStreamOut = false;                                                                    //是否直接输出文件流
+
 }
