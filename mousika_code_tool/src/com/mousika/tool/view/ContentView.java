@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mousika.tool.view;
 
 import javax.swing.JFrame;
