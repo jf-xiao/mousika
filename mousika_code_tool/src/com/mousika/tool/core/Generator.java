@@ -144,7 +144,7 @@ public class Generator {
             String title = PathUtil.pack2Path(serviceImplPack)+"/"+modelClass + "Service.java";
             new ContentView().showView(title,fileStream);
         }else {
-            CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.SERVICE_IMPL).getTemplatePath(), outputPath, modelClass + "Service.java");
+            CodeToolGenerator.generator(params, ConfigInfo.tempConfigMap.get(Constants.SERVICE_IMPL).getTemplatePath(), outputPath, modelClass + "ServiceImpl.java");
         }
     }
 
